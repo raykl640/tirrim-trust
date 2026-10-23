@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Feature from '../components/Feature.astro';
+import GiveBand from '../components/GiveBand.astro';
+import { photos } from '../data/photos';
+---
+
+<Layout
+  title="Development"
+  description="The Tirrim Development Program: physical infrastructure, food, emergency transport and scholarships for the Korr area of Northern Kenya."
+>
+  <PageHero
+    eyebrow="Ministry · Development"
+    title="…the <em>hands.</em>"
+    lede="For almost thirty years the Tirrim Development Program has been the hands for the Rendille-occupied area: building, feeding, carrying and sending."
+    photo={photos['dev-horizon']}
+    aspect="1440 / 380"
+    caption="Haze over the settlements and red earth of Northern Kenya."
+  />
+
+  <section class="section">
+    <div class="container">
+      <Feature photo={photos['dev-building']} title="Physical infrastructure" eyebrow="01">
+        <p>
+          Projects ranging from residential homes to water towers to entire school campuses have been built to further the
+          Gospel of Jesus Christ.
+        </p>
+        <p>These high-quality structures have given the local church physical places in which to share spiritual life throughout the community.</p>
+      </Feature>
+      <Feature photo={photos['dev-food']} title="Food" eyebrow="02" flip>
+        <p>
+          The Rendille community lives in a dry desert land. Agriculture is difficult due to a lack of fertile soil and
+          access to water. Through the help of generous supporters, the Tirrim Development Program has been able to provide
+          food to the community.
+        </p>
+        <p>Programmes like “Food for Work” have allowed the community to invest in the physical development of the Korr area while providing for their families.</p>
+      </Feature>
+      <Feature photo={photos['dev-emergency']} title="Emergencies" eyebrow="03">
+        <p>
+          In the Korr area, medical facilities are poorly funded and struggle to provide medications, so emergency transport
+          is usually not an option.
+        </p>
+        <p>The Tirrim Development Program provides emergency transportation within the Korr area, and to bigger facilities outside it.</p>
+      </Feature>
+      <Feature photo={photos['dev-scholarship']} title="Scholarships" eyebrow="04" flip position="50% 30%">
+        <p>
+          Many students struggle to finish their education. Sometimes it is academic performance or attendance; many times it
+          is a lack of finances. Scholarships give students the opportunity to continue their education and pursue a brighter
+          future.
+        </p>
+        <p>A few of the many who have benefitted from this programme are now in the leadership of the Tirrim Development Program.</p>
+      </Feature>
+    </div>
+  </section>
+
+  <GiveBand
+    title="Be the hands<br> in Korr."
+    text="Rendille Ministries helps feed the poor and starving, provides emergency medical transport to distant hospitals, and helps the sick, suffering and desperate."
+    photo={photos['dev-food']}
+  />
+</Layout>

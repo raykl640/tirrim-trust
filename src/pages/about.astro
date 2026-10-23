@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Partners from '../components/Partners.astro';
+import GiveBand from '../components/GiveBand.astro';
+import { photos } from '../data/photos';
+
+const values = [
+  { name: 'Christ-centred', text: 'We strive to see Christ be pre-eminent in everything we do.' },
+  { name: 'Integrity', text: 'We expect Tirrim employees to be truthful and upright at all times.' },
+  { name: 'Teamwork', text: 'We expect Tirrim employees to be team players, demonstrating cooperation, trust, respect and friendliness.' },
+  { name: 'Excellence', text: 'We expect employees to deliver services and products of outstanding quality.' },
+];
+
+const philosophy = [
+  'fosters spiritual growth.',
+  'fosters cooperation and communication.',
+  'treats each other with dignity and respect.',
+  'promotes harmony and teamwork.',
+  'strives for mutual understanding.',
+];
+---
+
+<Layout
+  title="Who we are"
+  description="The Tirrim Trust is a non-profit Christian organisation founded by AIC Korr in 1999 in the Kaisut Desert of Northern Kenya."
+>
+  <PageHero
+    eyebrow="Who are we? What is Tirrim?"
+    title="The king post.<br><em>The cornerstone.</em>"
+    lede="Tirrim, which means “king post” or “cornerstone”, is the ministry of God-fearing people with professional skills in the field of holistic ministry."
+    photo={photos['korr-town']}
+    aspect="4 / 1"
+    caption="Marsabit County, Northern Kenya."
+  />
+
+  <!-- The place -->
+  <section class="section">
+    <div class="container grid-12 place">
+      <div class="place__intro">
+        <p class="eyebrow reveal"><span class="num">01</span> The place</p>
+        <h2 class="h2 reveal">Few roads.<br />Little rain.<br />Growing hope.</h2>
+      </div>
+      <div class="prose place__text reveal">
+        <p>
+          The northern part of Kenya is a desert region and one of the poorest and least developed in the country. It is
+          almost impossible for the population to have a stable income from farming. Most of the ethnic groups live a
+          semi-nomadic lifestyle, living mainly on animal breeding.
+        </p>
+        <p>
+          Because the region has few resources, the Kenyan Government invests very little in the development of Marsabit
+          County. The young people have little hope for a successful life staying in this county. Most of them try to
+          build up a life in the cities, far from their roots and home.
+        </p>
+        <p>
+          Northern Kenya has few all-season roads, relatively dismal phone connections and many illiterate people. The
+          living is harsh, but people are beginning to hunger and hope for education and ways to initiate
+          self-improvement.
+        </p>
+      </div>
+      <figure class="place__road reveal-media">
+        <div class="media dome"><Photo photo={photos['desert-road']} sizes="(min-width: 64rem) 30vw, 60vw" /></div>
+      </figure>
+      <figure class="place__elders reveal-media">
+        <div class="media"><Photo photo={photos['elders-hands']} sizes="(min-width: 64rem) 34vw, 90vw" /></div>
+        <figcaption class="caption">Rendille elders.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Who we are -->
+  <section class="section surface-ink">
+    <div class="container grid-12 who">
+      <div class="who__text">
+        <p class="eyebrow reveal"><span class="num">02</span> Who we are</p>
+        <p class="lede who__lede reveal">
+          The Tirrim Trust is a non-profit Christian organisation founded by AIC Korr in 1999 in the Kaisut Desert of
+          Northern Kenya.
+        </p>
+        <div class="prose who__body reveal">
+          <p>
+            Over the years it has provided holistic development through education, community development, the provision
+            of clean water, educational scholarships and outreach programmes.
+          </p>
+          <p>
+            Tirrim is dedicated to spreading the Gospel of Jesus Christ through Christian education, adult literacy,
+            community development, audio Bibles and clean water. Tirrim partners with individuals, Christian ministries and
+            organisations in Kenya, reaching out to the nomadic communities of Northern Kenya.
+          </p>
+        </div>
+      </div>
+      <figure class="who__figure reveal-media">
+        <div class="media"><Photo photo={photos['teacher-field']} sizes="(min-width: 64rem) 40vw, 90vw" /></div>
+        <figcaption class="caption">Teaching in the open air.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="section" id="vision">
+    <div class="container">
+      <div class="grid-12 vision__head">
+        <p class="eyebrow reveal"><span class="num">03</span> Our vision</p>
+        <h2 class="h2 vision__title reveal">Core values</h2>
+      </div>
+      <ol role="list" class="values">
+        {
+          values.map((v, i) => (
+            <li class="value reveal">
+              <span class="value__n">0{i + 1}</span>
+              <h3 class="h4 value__name">{v.name}</h3>
+              <p class="value__text">{v.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section surface-sky">
+    <div class="container grid-12 philo">
+      <div class="philo__head">
+        <p class="eyebrow reveal">Our philosophy</p>
+        <p class="h3 philo__stem reveal">Tirrim shall remain an environment that…</p>
+      </div>
+      <ul role="list" class="philo__list">
+        {philosophy.map((line) => <li class="reveal"><span class="tri" />{line}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container"><Partners /></div>
+  </section>
+
+  <GiveBand />
+</Layout>
+
+<style>
+  .place { row-gap: clamp(3rem, 6vw, 5rem); align-items: start; }
+  .place__intro { grid-column: 1 / span 5; }
+  .place__intro .h2 { margin-top: 1.75rem; }
+  .place__text { grid-column: 7 / -1; color: var(--muted); }
+  .place__road { grid-column: 2 / span 4; }
+  .place__road .media { aspect-ratio: 3 / 4; }
+  .place__elders { grid-column: 7 / -1; margin-top: clamp(0rem, 10vw, 10rem); }
+  .place__elders .media { aspect-ratio: 6 / 5; }
+
+  .who { row-gap: 3rem; align-items: center; }
+  .who__text { grid-column: 1 / span 6; }
+  .who__lede { margin-block: 1.75rem 2rem; font-size: var(--step-3); line-height: 1.15; letter-spacing: -0.03em; }
+  .who__body { color: rgb(255 255 255 / 0.72); max-width: 38rem; }
+  .who__figure { grid-column: 8 / -1; }
+  .who__figure .media { aspect-ratio: 4 / 5; }
+
+  .vision__head { row-gap: 1.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .vision__head > * { grid-column: 1 / -1; }
+  .values { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--text); }
+  .value { padding: 1.75rem clamp(1rem, 2vw, 2rem) 0 0; }
+  .value + .value { padding-left: clamp(1rem, 2vw, 2rem); border-left: 1px solid var(--line); }
+  .value__n { font-size: 0.8125rem; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .value__name { margin-block: 3rem 1rem; }
+  .value__text { color: var(--muted); font-size: 0.9375rem; max-width: 26ch; }
+
+  .philo { row-gap: 2.5rem; }
+  .philo__head { grid-column: 1 / span 5; }
+  .philo__stem { margin-top: 1.5rem; }
+  .philo__list { grid-column: 7 / -1; }
+  .philo__list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid rgb(20 112 175 / 0.2);
+    font-family: var(--serif);
+    font-size: var(--step-2);
+    line-height: 1.25;
+  }
+  .philo__list .tri { width: 0.5em; height: 0.6em; transform: translateY(-0.05em); }
+
+  @media (max-width: 56rem) {
+    .place__intro, .place__text, .place__elders, .who__text, .who__figure, .philo__head, .philo__list { grid-column: 1 / -1; }
+    .place__road { grid-column: 1 / span 8; }
+    .place__elders { margin-top: 0; }
+    .values { grid-template-columns: 1fr 1fr; row-gap: 2.5rem; }
+    .value + .value:nth-child(3) { border-left: 0; padding-left: 0; }
+    .value__name { margin-top: 1.5rem; }
+  }
+</style>

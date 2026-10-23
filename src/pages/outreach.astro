@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Feature from '../components/Feature.astro';
+import Scripture from '../components/Scripture.astro';
+import GiveBand from '../components/GiveBand.astro';
+import { photos } from '../data/photos';
+---
+
+<Layout
+  title="Outreach"
+  description="Training, evangelism and camps, and audio Bibles: taking the Gospel to the nomadic Rendille of Northern Kenya."
+>
+  <PageHero
+    eyebrow="Ministry · Outreach"
+    title="…the <em>feet.</em>"
+    lede="Visitations, preaching, the Jesus Film under the stars. Our goal is to see each one mature in Christ."
+    photo={photos['outreach-night']}
+    aspect="1352 / 472"
+    caption="An outreach night in the desert: the Jesus Film, a tent and a projector screen."
+  />
+
+  <section class="section">
+    <div class="container">
+      <Feature photo={photos['outreach-training']} title="Training" eyebrow="01">
+        <p>We offer training to our staff and community to promote learning and pass on skills.</p>
+        <p>
+          Teachers have received classroom training, businesses have learned how to use their business for missions, parents
+          have learned how to lead homes according to Biblical principles, and leaders have been empowered to lead after the
+          example of Jesus.
+        </p>
+      </Feature>
+      <Feature photo={photos['outreach-film']} title="Evangelism & camps" eyebrow="02" flip>
+        <p>
+          Our pastors, evangelists and church congregation share the Gospel through many methods, including visitations,
+          preaching and the Jesus Film.
+        </p>
+        <p>
+          We run camps for youth, including VBS, sports camps and youth rallies: a fun atmosphere where young people hear the
+          Gospel and are given a chance to make a decision for Christ.
+        </p>
+      </Feature>
+      <Feature photo={photos['outreach-audio-bible']} title="Audio Bibles" eyebrow="03">
+        <p>
+          Many Rendille are illiterate. Audio Bibles allow us to promote spiritual maturity and encourage individuals to seek
+          out truth for themselves, truth that can only be found in the Word of God.
+        </p>
+      </Feature>
+    </div>
+  </section>
+
+  <section class="strip">
+    <div class="container strip__grid">
+      <figure class="reveal-media"><div class="media"><Photo photo={photos['outreach-classroom']} sizes="(min-width: 52rem) 60vw, 92vw" /></div></figure>
+      <figure class="reveal-media"><div class="media"><Photo photo={photos['outreach-scripture']} sizes="(min-width: 52rem) 36vw, 92vw" /></div></figure>
+    </div>
+  </section>
+
+  <Scripture
+    quote="“Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit.”"
+    cite="The Great Commission · Matthew 28:19"
+    tone="ink"
+  />
+
+  <GiveBand photo={photos['outreach-night']} />
+</Layout>
+
+<style>
+  .strip { padding-bottom: var(--section); }
+  .strip__grid { display: grid; grid-template-columns: 5fr 3fr; gap: clamp(1rem, 2.4vw, 2.5rem); align-items: end; }
+  .strip__grid .media { aspect-ratio: 4 / 3; border-radius: var(--radius); }
+  .strip__grid figure:last-child .media { aspect-ratio: 4 / 5; }
+  @media (max-width: 52rem) { .strip__grid { grid-template-columns: 1fr; } }
+</style>

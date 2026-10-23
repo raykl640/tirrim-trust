@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Scripture from '../components/Scripture.astro';
+import Partners from '../components/Partners.astro';
+import GiveBand from '../components/GiveBand.astro';
+import { photos } from '../data/photos';
+
+const convictions = [
+  { title: 'God desires every one of His people to have clean water.', text: 'Each person on the planet deserves safe and easy access to clean water.' },
+  { title: 'God desires each of His people to know Jesus.', text: 'Each person on the planet deserves to know about the one true God, through the knowledge of His Son Jesus Christ.' },
+  { title: 'Join God where He is working.', text: 'God already has the mission of reaching those who don’t know Him, and He has a plan to do it. He just wants us to join Him in that plan.' },
+  { title: 'It takes a village.', text: 'True transformation comes from the people themselves. Villages and communities must invest in projects with commitments of people, resources and finances.' },
+];
+---
+
+<Layout title="Water" description="Clean water for the nomadic communities of Northern Kenya, and the living water of the Gospel.">
+  <PageHero
+    eyebrow="Ministry · Water"
+    title="Water<br><em>that never runs dry.</em>"
+    lede="In one of the driest places in Kenya, a borehole changes everything. We bring clean water, and the living water that satisfies for ever."
+    photo={photos['water-jerrycans']}
+    variant="split"
+    position="50% 45%"
+  />
+
+  <Scripture
+    quote="“Everyone who drinks this water will be thirsty again, but whoever drinks the water I give them will never thirst.”"
+    cite="Jesus · John 4:13–14"
+  />
+
+  <section class="section surface-ink">
+    <div class="container">
+      <div class="grid-12 conv__head">
+        <p class="eyebrow reveal">What we believe</p>
+        <h2 class="h2 conv__title reveal">Four convictions behind every borehole.</h2>
+      </div>
+      <ol role="list" class="conv">
+        {
+          convictions.map((c, i) => (
+            <li class="conv__item reveal">
+              <span class="conv__n">0{i + 1}</span>
+              <h3 class="h4">{c.title}</h3>
+              <p>{c.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid-12 drill">
+      <figure class="drill__figure reveal-media">
+        <div class="media dome"><Photo photo={photos['water-drilling']} sizes="(min-width: 52rem) 34vw, 80vw" /></div>
+        <figcaption class="caption">Drilling strikes water for a new borehole.</figcaption>
+      </figure>
+      <div class="drill__text">
+        <p class="eyebrow reveal">Water ministry partners</p>
+        <p class="h3 drill__lede reveal">Every well is drilled with partners, and owned by the community it serves.</p>
+        <div class="reveal"><Partners only={['genesis-waters']} title="In partnership with" /></div>
+      </div>
+    </div>
+  </section>
+
+  <GiveBand photo={photos['water-jerrycans']} />
+</Layout>
+
+<style>
+  .conv__head { row-gap: 1.5rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .conv__head > * { grid-column: 1 / span 9; }
+  .conv { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--ink-line); }
+  .conv__item { padding: 2.25rem clamp(1rem, 3vw, 3rem) 2.75rem 0; border-bottom: 1px solid var(--ink-line); }
+  .conv__item:nth-child(even) { padding-left: clamp(1rem, 3vw, 3rem); border-left: 1px solid var(--ink-line); }
+  .conv__n { display: block; margin-bottom: 2.5rem; font-size: 0.8125rem; color: var(--cyan); }
+  .conv__item h3 { max-width: 22ch; }
+  .conv__item p { margin-top: 1rem; color: rgb(255 255 255 / 0.68); max-width: 44ch; }
+
+  .drill { row-gap: 3rem; align-items: center; }
+  .drill__figure { grid-column: 1 / span 5; }
+  .drill__figure .media { aspect-ratio: 4 / 5; }
+  .drill__text { grid-column: 7 / -1; }
+  .drill__lede { margin-block: 1.5rem 3rem; }
+  .drill__text :global(.partners__grid) { grid-template-columns: minmax(0, 18rem); }
+
+  @media (max-width: 52rem) {
+    .conv { grid-template-columns: 1fr; }
+    .conv__item:nth-child(even) { padding-left: 0; border-left: 0; }
+    .drill__figure, .drill__text { grid-column: 1 / -1; }
+  }
+</style>
