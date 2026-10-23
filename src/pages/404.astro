@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Arrow from '../components/Arrow.astro';
+import { href } from '../lib/url';
+---
+
+<Layout title="Page not found">
+  <section class="nf surface-ink">
+    <div class="container">
+      <p class="eyebrow">404</p>
+      <h1 class="h1">This track runs<br /><em>into the desert.</em></h1>
+      <p class="lede muted">The page you were looking for isn’t here.</p>
+      <a href={href('/')} class="btn">Back to the homepage <Arrow /></a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .nf { min-height: 80svh; display: grid; align-items: center; padding-block: calc(var(--header-h) + 4rem) 5rem; }
+  .nf .h1 { margin-block: 1.5rem; }
+  .nf em { font-family: var(--serif); font-weight: 300; color: var(--cyan); }
+  .nf .btn { margin-top: 2.5rem; }
+</style>

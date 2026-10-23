@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+---
+
+<Layout title="Contact" description="Get in touch with the Tirrim Trust. PO Box 21020-00505, Nairobi, Kenya · info@tirrim.org">
+  <PageHero eyebrow="Contact us" title="Let’s <em>connect.</em>" lede="Questions about the work, partnering, or visiting Korr? We’d love to hear from you." />
+
+  <section class="section">
+    <div class="container grid-12 contact">
+      <div class="contact__details">
+        <div class="contact__block reveal">
+          <p class="eyebrow">Email</p>
+          <a href={`mailto:${site.email}`} class="h3 contact__email">{site.email}</a>
+        </div>
+        <div class="contact__block reveal">
+          <p class="eyebrow">Post</p>
+          <address class="lede">
+            The Tirrim Trust<br />
+            {site.address.map((line) => <>{line}<br /></>)}
+          </address>
+        </div>
+        <div class="contact__block reveal">
+          <p class="eyebrow">The field</p>
+          <p class="lede">Korr, Marsabit County<br />Northern Kenya</p>
+        </div>
+      </div>
+
+      <form class="form contact__form reveal" data-demo>
+        <div class="form__row">
+          <label class="field"><span>First name</span><input name="first" autocomplete="given-name" required /></label>
+          <label class="field"><span>Last name</span><input name="last" autocomplete="family-name" required /></label>
+        </div>
+        <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
+        <label class="field"><span>Message</span><textarea name="message" required></textarea></label>
+        <button class="btn btn--blue" type="submit">Send message <Arrow /></button>
+        <p class="form__status" data-status role="status" hidden>
+          Thank you. This demo form isn’t connected yet, so nothing was sent. Please email {site.email}.
+        </p>
+      </form>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .contact { row-gap: 4rem; align-items: start; }
+  .contact__details { grid-column: 1 / span 5; display: grid; gap: 2.75rem; }
+  .contact__block .eyebrow { margin-bottom: 0.9rem; }
+  .contact__email { display: inline-block; color: var(--blue); word-break: break-word; }
+  .contact__email:hover { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 2px; }
+  address { font-style: normal; }
+  .contact__form { grid-column: 7 / -1; padding: clamp(1.5rem, 4vw, 3rem); background: var(--mist); border-radius: var(--radius); }
+  @media (max-width: 52rem) { .contact__details, .contact__form { grid-column: 1 / -1; } }
+</style>

@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Arrow from '../components/Arrow.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { photos } from '../data/photos';
+import { href } from '../lib/url';
+
+const projects = [
+  {
+    name: 'Rendille Ministries',
+    photo: photos['rendille-portrait'],
+    text: 'Helps feed the poor and starving Rendille, provides emergency medical transport to distant hospitals, and helps the sick, suffering and desperate.',
+  },
+  {
+    name: 'Rendille Education (REAP)',
+    photo: photos['classroom-girl'],
+    text: 'Provides scholarships for students who desire to go to Tirrim Christian Schools.',
+  },
+  {
+    name: 'Tirrim Schools',
+    photo: photos['school-buildings'],
+    text: 'Funds improvements to the schools and day-to-day operations.',
+    detail: ['Textbooks and library books', 'Science lab materials', 'Teaching aids', 'Guards and security', 'Clean water', 'Medical supplies', 'Teacher salaries', 'Administration'],
+  },
+];
+---
+
+<Layout title="Give" description="Support the work of the Tirrim Trust in the Korr area of Northern Kenya: Rendille Ministries, Rendille Education (REAP) and Tirrim Schools.">
+  <PageHero
+    eyebrow="Make a difference"
+    title="Send support.<br><em>Be a partner.</em>"
+    lede="The Tirrim Development Program cannot exist without the generous support of our ministry partners. Thank you for considering supporting the Tirrim Trust."
+    photo={photos['rendille-portrait']}
+    variant="split"
+    position="55% 30%"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid-12 proj__head">
+        <p class="eyebrow reveal">Three ways to give</p>
+        <h2 class="h2 proj__title reveal">Choose where your gift goes.</h2>
+      </div>
+      <ol role="list" class="proj">
+        {
+          projects.map((p, i) => (
+            <li class="proj__item reveal">
+              <div class="media dome--wide proj__media">
+                <Photo photo={p.photo} sizes="(min-width: 52rem) 22vw, 92vw" />
+              </div>
+              <div class="proj__body">
+                <span class="proj__n">0{i + 1}</span>
+                <h3 class="h3">{p.name}</h3>
+                <p class="prose muted">{p.text}</p>
+                {p.detail && (
+                  <ul role="list" class="proj__tags">
+                    {p.detail.map((d) => <li>{d}</li>)}
+                  </ul>
+                )}
+              </div>
+              <a href={href('/contact/')} class="btn btn--blue proj__btn">
+                Give to this project <Arrow />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="proj__note muted">Online giving isn’t connected in this demo. Each button opens the contact page.</p>
+    </div>
+  </section>
+
+  <Newsletter />
+</Layout>
+
+<style>
+  .proj__head { row-gap: 1.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .proj__head > * { grid-column: 1 / -1; }
+  .proj { border-top: 1px solid var(--text); }
+  .proj__item {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) auto;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: center;
+    padding-block: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .proj__media { aspect-ratio: 5 / 4; }
+  .proj__n { font-size: 0.8125rem; color: var(--blue); }
+  .proj__body h3 { margin-block: 0.75rem 1rem; }
+  .proj__body .prose { max-width: 44ch; }
+  .proj__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+  .proj__tags li { padding: 0.3rem 0.75rem; border: 1px solid var(--line); border-radius: 99px; font-size: 0.8125rem; color: var(--muted); }
+  .proj__note { margin-top: 1.5rem; font-size: 0.8125rem; }
+  @media (max-width: 52rem) {
+    .proj__item { grid-template-columns: 1fr; }
+    .proj__btn { justify-self: start; }
+  }
+</style>
