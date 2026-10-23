@@ -5,6 +5,7 @@ import Photo from '../components/Photo.astro';
 import Scripture from '../components/Scripture.astro';
 import Partners from '../components/Partners.astro';
 import GiveBand from '../components/GiveBand.astro';
+import NextLink from '../components/NextLink.astro';
 import { photos } from '../data/photos';
 
 const convictions = [
@@ -17,6 +18,7 @@ const convictions = [
 
 <Layout title="Water" description="Clean water for the nomadic communities of Northern Kenya, and the living water of the Gospel.">
   <PageHero
+    crumb="Water"
     eyebrow="Ministry · Water"
     title="Water<br><em>that never runs dry.</em>"
     lede="In one of the driest places in Kenya, a borehole changes everything. We bring clean water, and the living water that satisfies for ever."
@@ -30,7 +32,7 @@ const convictions = [
     cite="Jesus · John 4:13–14"
   />
 
-  <section class="section surface-ink">
+  <section class="section surface-ink topo">
     <div class="container">
       <div class="grid-12 conv__head">
         <p class="eyebrow reveal">What we believe</p>
@@ -53,7 +55,7 @@ const convictions = [
   <section class="section">
     <div class="container grid-12 drill">
       <figure class="drill__figure reveal-media">
-        <div class="media dome"><Photo photo={photos['water-drilling']} sizes="(min-width: 52rem) 34vw, 80vw" /></div>
+        <div class="media dome" data-zoom><Photo photo={photos['water-drilling']} sizes="(min-width: 52rem) 34vw, 80vw" /></div>
         <figcaption class="caption">Drilling strikes water for a new borehole.</figcaption>
       </figure>
       <div class="drill__text">
@@ -64,6 +66,7 @@ const convictions = [
     </div>
   </section>
 
+  <NextLink label="Next ministry" title="Development" path="/development/" />
   <GiveBand photo={photos['water-jerrycans']} />
 </Layout>
 

@@ -3,17 +3,31 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Arrow from '../components/Arrow.astro';
 import { site } from '../data/site';
+
+const topics = [
+  { value: 'general', label: 'A general question' },
+  { value: 'giving', label: 'Giving and support' },
+  { value: 'partnering', label: 'Partnering as a church or ministry' },
+  { value: 'visiting', label: 'Visiting Korr' },
+  { value: 'prayer', label: 'Prayer and the newsletter' },
+];
 ---
 
 <Layout title="Contact" description="Get in touch with the Tirrim Trust. PO Box 21020-00505, Nairobi, Kenya · info@tirrim.org">
-  <PageHero eyebrow="Contact us" title="Let’s <em>connect.</em>" lede="Questions about the work, partnering, or visiting Korr? We’d love to hear from you." />
+  <PageHero eyebrow="Contact us" title="Let’s <em>connect.</em>" crumb="Contact" lede="Questions about the work, partnering, or visiting Korr? We’d love to hear from you." />
 
   <section class="section">
     <div class="container grid-12 contact">
       <div class="contact__details">
         <div class="contact__block reveal">
           <p class="eyebrow">Email</p>
-          <a href={`mailto:${site.email}`} class="h3 contact__email">{site.email}</a>
+          <div class="contact__email-row">
+            <a href={`mailto:${site.email}`} class="h3 contact__email">{site.email}</a>
+            <button class="contact__copy" data-copy={site.email}>
+              <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5" /><path d="M13 7V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13H7" /></svg>
+              Copy
+            </button>
+          </div>
         </div>
         <div class="contact__block reveal">
           <p class="eyebrow">Post</p>
@@ -28,13 +42,22 @@ import { site } from '../data/site';
         </div>
       </div>
 
-      <form class="form contact__form reveal" data-demo>
+      <form class="form contact__form reveal" data-demo data-contact-form>
+        <p class="contact__prefill" data-prefill-note hidden>
+          We’ve started your message from the quick-give panel. Add anything you like, then send.
+        </p>
         <div class="form__row">
           <label class="field"><span>First name</span><input name="first" autocomplete="given-name" required /></label>
           <label class="field"><span>Last name</span><input name="last" autocomplete="family-name" required /></label>
         </div>
         <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" required /></label>
-        <label class="field"><span>Message</span><textarea name="message" required></textarea></label>
+        <label class="field">
+          <span>What’s it about?</span>
+          <select name="topic" data-topic>
+            {topics.map((t) => <option value={t.value}>{t.label}</option>)}
+          </select>
+        </label>
+        <label class="field"><span>Message</span><textarea name="message" required data-message></textarea></label>
         <button class="btn btn--blue" type="submit">Send message <Arrow /></button>
         <p class="form__status" data-status role="status" hidden>
           Thank you. This demo form isn’t connected yet, so nothing was sent. Please email {site.email}.
@@ -44,13 +67,51 @@ import { site } from '../data/site';
   </section>
 </Layout>
 
+<script>
+  // Arriving from the quick-give panel: pre-select the topic and draft the message.
+  const params = new URLSearchParams(location.search);
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form && params.get('topic')) {
+    const topic = form.querySelector<HTMLSelectElement>('[data-topic]')!;
+    topic.value = params.get('topic')!;
+    const amount = Number(params.get('amount'));
+    if (params.get('topic') === 'giving' && amount) {
+      const names: Record<string, string> = {
+        needed: 'wherever it is most needed',
+        rendille: 'Rendille Ministries',
+        reap: 'Rendille Education (REAP)',
+        schools: 'Tirrim Schools',
+      };
+      const money = new Intl.NumberFormat('en', { style: 'currency', currency: params.get('currency') || 'USD', maximumFractionDigits: 0 }).format(amount);
+      const freq = params.get('freq') === 'monthly' ? 'a monthly gift' : 'a one-time gift';
+      form.querySelector<HTMLTextAreaElement>('[data-message]')!.value =
+        `Hello, I would like to give ${freq} of ${money} to ${names[params.get('project') || 'needed'] ?? names.needed}. Please let me know how to complete my gift.`;
+      form.querySelector<HTMLElement>('[data-prefill-note]')!.hidden = false;
+    }
+  }
+</script>
+
 <style>
   .contact { row-gap: 4rem; align-items: start; }
-  .contact__details { grid-column: 1 / span 5; display: grid; gap: 2.75rem; }
+  .contact__details { grid-column: 1 / span 5; display: grid; gap: 2.5rem; }
   .contact__block .eyebrow { margin-bottom: 0.9rem; }
+  .contact__email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
   .contact__email { display: inline-block; color: var(--blue); word-break: break-word; }
   .contact__email:hover { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 2px; }
+  .contact__copy {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.8rem; border: 1px solid var(--line); border-radius: 99px;
+    font-size: 0.8125rem; transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .contact__copy svg { width: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .contact__copy:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
   address { font-style: normal; }
-  .contact__form { grid-column: 7 / -1; padding: clamp(1.5rem, 4vw, 3rem); background: var(--mist); border-radius: var(--radius); }
+  .contact__form { grid-column: 7 / -1; padding: clamp(1.5rem, 4vw, 2.75rem); background: var(--sand); border-radius: var(--radius); }
+  .contact__prefill { padding: 0.85rem 1rem; border-left: 3px solid var(--cyan); background: #fff; font-size: 0.875rem; }
+  .field select {
+    width: 100%; padding: 0.7rem 0; font-size: 1.0625rem; background: transparent;
+    border: 0; border-bottom: 1px solid #9aa6b2; border-radius: 0;
+  }
+  .field select:focus { outline: none; border-color: var(--blue); box-shadow: 0 1px 0 var(--blue); }
   @media (max-width: 52rem) { .contact__details, .contact__form { grid-column: 1 / -1; } }
 </style>

@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import Feature from '../components/Feature.astro';
 import GiveBand from '../components/GiveBand.astro';
+import SectionNav from '../components/SectionNav.astro';
+import NextLink from '../components/NextLink.astro';
 import { photos } from '../data/photos';
 ---
 
@@ -11,6 +13,7 @@ import { photos } from '../data/photos';
   description="The Tirrim Development Program: physical infrastructure, food, emergency transport and scholarships for the Korr area of Northern Kenya."
 >
   <PageHero
+    crumb="Development"
     eyebrow="Ministry · Development"
     title="…the <em>hands.</em>"
     lede="For almost thirty years the Tirrim Development Program has been the hands for the Rendille-occupied area: building, feeding, carrying and sending."
@@ -19,16 +22,18 @@ import { photos } from '../data/photos';
     caption="Haze over the settlements and red earth of Northern Kenya."
   />
 
+  <SectionNav items={[{ id: 'infrastructure', label: 'Infrastructure' }, { id: 'food', label: 'Food' }, { id: 'emergencies', label: 'Emergencies' }, { id: 'scholarships', label: 'Scholarships' }]} />
+
   <section class="section">
     <div class="container">
-      <Feature photo={photos['dev-building']} title="Physical infrastructure" eyebrow="01">
+      <Feature photo={photos['dev-building']} title="Physical infrastructure" id="infrastructure" eyebrow="01">
         <p>
           Projects ranging from residential homes to water towers to entire school campuses have been built to further the
           Gospel of Jesus Christ.
         </p>
         <p>These high-quality structures have given the local church physical places in which to share spiritual life throughout the community.</p>
       </Feature>
-      <Feature photo={photos['dev-food']} title="Food" eyebrow="02" flip>
+      <Feature photo={photos['dev-food']} title="Food" id="food" eyebrow="02" flip>
         <p>
           The Rendille community lives in a dry desert land. Agriculture is difficult due to a lack of fertile soil and
           access to water. Through the help of generous supporters, the Tirrim Development Program has been able to provide
@@ -36,14 +41,14 @@ import { photos } from '../data/photos';
         </p>
         <p>Programmes like “Food for Work” have allowed the community to invest in the physical development of the Korr area while providing for their families.</p>
       </Feature>
-      <Feature photo={photos['dev-emergency']} title="Emergencies" eyebrow="03">
+      <Feature photo={photos['dev-emergency']} title="Emergencies" id="emergencies" eyebrow="03">
         <p>
           In the Korr area, medical facilities are poorly funded and struggle to provide medications, so emergency transport
           is usually not an option.
         </p>
         <p>The Tirrim Development Program provides emergency transportation within the Korr area, and to bigger facilities outside it.</p>
       </Feature>
-      <Feature photo={photos['dev-scholarship']} title="Scholarships" eyebrow="04" flip position="50% 30%">
+      <Feature photo={photos['dev-scholarship']} title="Scholarships" id="scholarships" eyebrow="04" flip position="50% 30%">
         <p>
           Many students struggle to finish their education. Sometimes it is academic performance or attendance; many times it
           is a lack of finances. Scholarships give students the opportunity to continue their education and pursue a brighter
@@ -53,6 +58,8 @@ import { photos } from '../data/photos';
       </Feature>
     </div>
   </section>
+
+  <NextLink label="Next ministry" title="Outreach" path="/outreach/" />
 
   <GiveBand
     title="Be the hands<br> in Korr."

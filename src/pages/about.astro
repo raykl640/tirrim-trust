@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import Photo from '../components/Photo.astro';
 import Partners from '../components/Partners.astro';
 import GiveBand from '../components/GiveBand.astro';
+import SectionNav from '../components/SectionNav.astro';
 import { photos } from '../data/photos';
 
 const values = [
@@ -27,6 +28,7 @@ const philosophy = [
   description="The Tirrim Trust is a non-profit Christian organisation founded by AIC Korr in 1999 in the Kaisut Desert of Northern Kenya."
 >
   <PageHero
+    crumb="Who we are"
     eyebrow="Who are we? What is Tirrim?"
     title="The king post.<br><em>The cornerstone.</em>"
     lede="Tirrim, which means “king post” or “cornerstone”, is the ministry of God-fearing people with professional skills in the field of holistic ministry."
@@ -35,8 +37,18 @@ const philosophy = [
     caption="Marsabit County, Northern Kenya."
   />
 
+  <SectionNav
+    items={[
+      { id: 'place', label: 'The place' },
+      { id: 'who', label: 'Who we are' },
+      { id: 'vision', label: 'Core values' },
+      { id: 'philosophy', label: 'Our philosophy' },
+      { id: 'partners', label: 'Partners' },
+    ]}
+  />
+
   <!-- The place -->
-  <section class="section">
+  <section class="section" id="place">
     <div class="container grid-12 place">
       <div class="place__intro">
         <p class="eyebrow reveal"><span class="num">01</span> The place</p>
@@ -60,17 +72,17 @@ const philosophy = [
         </p>
       </div>
       <figure class="place__road reveal-media">
-        <div class="media dome"><Photo photo={photos['desert-road']} sizes="(min-width: 64rem) 30vw, 60vw" /></div>
+        <div class="media dome" data-zoom><Photo photo={photos['desert-road']} sizes="(min-width: 64rem) 30vw, 60vw" /></div>
       </figure>
       <figure class="place__elders reveal-media">
-        <div class="media"><Photo photo={photos['elders-hands']} sizes="(min-width: 64rem) 34vw, 90vw" /></div>
+        <div class="media" data-zoom><Photo photo={photos['elders-hands']} sizes="(min-width: 64rem) 34vw, 90vw" /></div>
         <figcaption class="caption">Rendille elders.</figcaption>
       </figure>
     </div>
   </section>
 
   <!-- Who we are -->
-  <section class="section surface-ink">
+  <section class="section surface-ink topo" id="who">
     <div class="container grid-12 who">
       <div class="who__text">
         <p class="eyebrow reveal"><span class="num">02</span> Who we are</p>
@@ -91,7 +103,7 @@ const philosophy = [
         </div>
       </div>
       <figure class="who__figure reveal-media">
-        <div class="media"><Photo photo={photos['teacher-field']} sizes="(min-width: 64rem) 40vw, 90vw" /></div>
+        <div class="media" data-zoom><Photo photo={photos['teacher-field']} sizes="(min-width: 64rem) 40vw, 90vw" /></div>
         <figcaption class="caption">Teaching in the open air.</figcaption>
       </figure>
     </div>
@@ -118,7 +130,7 @@ const philosophy = [
     </div>
   </section>
 
-  <section class="section surface-sky">
+  <section class="section surface-sand" id="philosophy">
     <div class="container grid-12 philo">
       <div class="philo__head">
         <p class="eyebrow reveal">Our philosophy</p>
@@ -130,7 +142,7 @@ const philosophy = [
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="partners">
     <div class="container"><Partners /></div>
   </section>
 
@@ -172,7 +184,7 @@ const philosophy = [
     align-items: baseline;
     gap: 1rem;
     padding-block: 1.1rem;
-    border-bottom: 1px solid rgb(20 112 175 / 0.2);
+    border-bottom: 1px solid var(--sand-line);
     font-family: var(--serif);
     font-size: var(--step-2);
     line-height: 1.25;

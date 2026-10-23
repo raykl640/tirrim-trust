@@ -9,16 +9,19 @@ import { href } from '../lib/url';
 
 const projects = [
   {
+    id: 'rendille',
     name: 'Rendille Ministries',
     photo: photos['rendille-portrait'],
     text: 'Helps feed the poor and starving Rendille, provides emergency medical transport to distant hospitals, and helps the sick, suffering and desperate.',
   },
   {
+    id: 'reap',
     name: 'Rendille Education (REAP)',
     photo: photos['classroom-girl'],
     text: 'Provides scholarships for students who desire to go to Tirrim Christian Schools.',
   },
   {
+    id: 'schools',
     name: 'Tirrim Schools',
     photo: photos['school-buildings'],
     text: 'Funds improvements to the schools and day-to-day operations.',
@@ -29,6 +32,7 @@ const projects = [
 
 <Layout title="Give" description="Support the work of the Tirrim Trust in the Korr area of Northern Kenya: Rendille Ministries, Rendille Education (REAP) and Tirrim Schools.">
   <PageHero
+    crumb="Give"
     eyebrow="Make a difference"
     title="Send support.<br><em>Be a partner.</em>"
     lede="The Tirrim Development Program cannot exist without the generous support of our ministry partners. Thank you for considering supporting the Tirrim Trust."
@@ -37,7 +41,7 @@ const projects = [
     position="55% 30%"
   />
 
-  <section class="section">
+  <section class="section" id="projects">
     <div class="container">
       <div class="grid-12 proj__head">
         <p class="eyebrow reveal">Three ways to give</p>
@@ -60,14 +64,14 @@ const projects = [
                   </ul>
                 )}
               </div>
-              <a href={href('/contact/')} class="btn btn--blue proj__btn">
+              <a href={href('/give/')} class="btn btn--blue proj__btn" data-give={p.id}>
                 Give to this project <Arrow />
               </a>
             </li>
           ))
         }
       </ol>
-      <p class="proj__note muted">Online giving isn’t connected in this demo. Each button opens the contact page.</p>
+      <p class="proj__note muted">Online giving isn’t connected in this demo. Each button opens the quick-give panel, which pre-fills a message to the Trust.</p>
     </div>
   </section>
 

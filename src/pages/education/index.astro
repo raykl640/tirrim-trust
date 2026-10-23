@@ -4,6 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import Photo from '../../components/Photo.astro';
 import Arrow from '../../components/Arrow.astro';
 import GiveBand from '../../components/GiveBand.astro';
+import SectionNav from '../../components/SectionNav.astro';
 import { photos } from '../../data/photos';
 import { schoolList } from '../../data/schools';
 import { href } from '../../lib/url';
@@ -30,6 +31,7 @@ const valued = [
   description="Tirrim Christian Schools: nursery, primary, junior high, secondary and adult literacy in Korr, Northern Kenya. Excellence with godliness."
 >
   <PageHero
+    crumb="Education"
     eyebrow="Tirrim Christian Schools"
     title="Excellence<br><em>with godliness.</em>"
     lede="Five schools in the Kaisut Desert, from a nursery class of more than a hundred children to a secondary school with a Biblical worldview."
@@ -38,7 +40,15 @@ const valued = [
     caption="Morning assembly around the flag."
   />
 
-  <section class="section">
+  <SectionNav
+    items={[
+      { id: 'vision-mission', label: 'Vision & mission' },
+      { id: 'schools', label: 'The schools' },
+      { id: 'values', label: 'We value' },
+    ]}
+  />
+
+  <section class="section" id="vision-mission">
     <div class="container grid-12 vm">
       <article class="vm__item reveal">
         <p class="eyebrow">Our vision</p>
@@ -57,7 +67,7 @@ const valued = [
     </div>
   </section>
 
-  <section class="section surface-mist">
+  <section class="section surface-sand" id="schools">
     <div class="container">
       <div class="grid-12 sch__head">
         <p class="eyebrow reveal">The schools</p>
@@ -88,7 +98,7 @@ const valued = [
   </section>
 
   <!-- The original “We value” diagram: four values divided by a cross. -->
-  <section class="section">
+  <section class="section" id="values">
     <div class="container">
       <div class="grid-12 val__head">
         <p class="eyebrow reveal">We value</p>

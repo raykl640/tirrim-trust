@@ -4,11 +4,10 @@ import PageHero from '../../components/PageHero.astro';
 import Photo from '../../components/Photo.astro';
 import Feature from '../../components/Feature.astro';
 import Scripture from '../../components/Scripture.astro';
-import Arrow from '../../components/Arrow.astro';
+import NextLink from '../../components/NextLink.astro';
 import GiveBand from '../../components/GiveBand.astro';
 import { schoolList, type School } from '../../data/schools';
 import { photos } from '../../data/photos';
-import { href } from '../../lib/url';
 
 export function getStaticPaths() {
   return schoolList.map((school, i) => ({
@@ -32,6 +31,7 @@ const { school, next } = Astro.props;
     lede={school.lede}
     photo={school.hero}
     variant={school.heroVariant}
+    crumb={school.short}
     position={school.heroPosition}
     aspect={school.heroAspect}
   />
@@ -57,7 +57,7 @@ const { school, next } = Astro.props;
         <ul role="list" class="trip">
           {school.triptych.map((t, i) => (
             <li class="reveal" style={`--offset:${i}`}>
-              <div class="media trip__media">
+              <div class="media trip__media" data-zoom>
                 <Photo photo={t.photo} sizes="(min-width: 52rem) 30vw, 92vw" />
               </div>
               <p class="h3 trip__label">{t.label}</p>
@@ -110,7 +110,7 @@ const { school, next } = Astro.props;
   {
     school.closing && (
       <figure class="closing">
-        <div class="media horizon closing__media">
+        <div class="media horizon closing__media" data-zoom>
           <Photo photo={school.closing.photo} sizes="100vw" />
         </div>
         <figcaption class="container caption">{school.closing.caption}</figcaption>
@@ -118,13 +118,7 @@ const { school, next } = Astro.props;
     )
   }
 
-  <nav class="container nextschool" aria-label="Next school">
-    <a href={href(`/education/${next.slug}/`)} class="nextschool__link">
-      <span class="eyebrow">Next school</span>
-      <span class="nextschool__name">{next.name}</span>
-      <span class="nextschool__go"><Arrow /></span>
-    </a>
-  </nav>
+  <NextLink label="Next school" title={next.name} path={`/education/${next.slug}/`} />
 
   <GiveBand
     title="Put a child<br> in school."
@@ -158,25 +152,6 @@ const { school, next } = Astro.props;
 
   .closing { margin-top: var(--section); }
   .closing__media { width: 100%; aspect-ratio: 21 / 9; min-height: 18rem; }
-
-  .nextschool { padding-block: var(--section); }
-  .nextschool__link {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: end;
-    gap: 1rem 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--text);
-  }
-  .nextschool__link .eyebrow { grid-column: 1 / -1; }
-  .nextschool__name { font-size: var(--step-5); font-weight: 500; letter-spacing: -0.05em; line-height: 0.95; transition: color 0.3s; }
-  .nextschool__go {
-    width: clamp(3.5rem, 7vw, 5.5rem); aspect-ratio: 1; display: grid; place-items: center;
-    border-radius: 50%; background: var(--cyan); transition: transform 0.5s var(--ease);
-  }
-  .nextschool__go :global(svg) { width: 40%; }
-  .nextschool__link:hover .nextschool__name { color: var(--blue); }
-  .nextschool__link:hover .nextschool__go { transform: rotate(-45deg); }
 
   @media (max-width: 52rem) {
     .intro__stat, .intro__text { grid-column: 1 / -1; }

@@ -5,6 +5,8 @@ import Photo from '../components/Photo.astro';
 import Feature from '../components/Feature.astro';
 import Scripture from '../components/Scripture.astro';
 import GiveBand from '../components/GiveBand.astro';
+import SectionNav from '../components/SectionNav.astro';
+import NextLink from '../components/NextLink.astro';
 import { photos } from '../data/photos';
 ---
 
@@ -13,6 +15,7 @@ import { photos } from '../data/photos';
   description="Training, evangelism and camps, and audio Bibles: taking the Gospel to the nomadic Rendille of Northern Kenya."
 >
   <PageHero
+    crumb="Outreach"
     eyebrow="Ministry · Outreach"
     title="…the <em>feet.</em>"
     lede="Visitations, preaching, the Jesus Film under the stars. Our goal is to see each one mature in Christ."
@@ -21,9 +24,11 @@ import { photos } from '../data/photos';
     caption="An outreach night in the desert: the Jesus Film, a tent and a projector screen."
   />
 
+  <SectionNav items={[{ id: 'training', label: 'Training' }, { id: 'evangelism', label: 'Evangelism & camps' }, { id: 'audio-bibles', label: 'Audio Bibles' }]} />
+
   <section class="section">
     <div class="container">
-      <Feature photo={photos['outreach-training']} title="Training" eyebrow="01">
+      <Feature photo={photos['outreach-training']} title="Training" id="training" eyebrow="01">
         <p>We offer training to our staff and community to promote learning and pass on skills.</p>
         <p>
           Teachers have received classroom training, businesses have learned how to use their business for missions, parents
@@ -31,7 +36,7 @@ import { photos } from '../data/photos';
           example of Jesus.
         </p>
       </Feature>
-      <Feature photo={photos['outreach-film']} title="Evangelism & camps" eyebrow="02" flip>
+      <Feature photo={photos['outreach-film']} title="Evangelism & camps" id="evangelism" eyebrow="02" flip>
         <p>
           Our pastors, evangelists and church congregation share the Gospel through many methods, including visitations,
           preaching and the Jesus Film.
@@ -41,7 +46,7 @@ import { photos } from '../data/photos';
           Gospel and are given a chance to make a decision for Christ.
         </p>
       </Feature>
-      <Feature photo={photos['outreach-audio-bible']} title="Audio Bibles" eyebrow="03">
+      <Feature photo={photos['outreach-audio-bible']} title="Audio Bibles" id="audio-bibles" eyebrow="03">
         <p>
           Many Rendille are illiterate. Audio Bibles allow us to promote spiritual maturity and encourage individuals to seek
           out truth for themselves, truth that can only be found in the Word of God.
@@ -52,8 +57,8 @@ import { photos } from '../data/photos';
 
   <section class="strip">
     <div class="container strip__grid">
-      <figure class="reveal-media"><div class="media"><Photo photo={photos['outreach-classroom']} sizes="(min-width: 52rem) 60vw, 92vw" /></div></figure>
-      <figure class="reveal-media"><div class="media"><Photo photo={photos['outreach-scripture']} sizes="(min-width: 52rem) 36vw, 92vw" /></div></figure>
+      <figure class="reveal-media"><div class="media" data-zoom><Photo photo={photos['outreach-classroom']} sizes="(min-width: 52rem) 60vw, 92vw" /></div></figure>
+      <figure class="reveal-media"><div class="media" data-zoom><Photo photo={photos['outreach-scripture']} sizes="(min-width: 52rem) 36vw, 92vw" /></div></figure>
     </div>
   </section>
 
@@ -63,6 +68,7 @@ import { photos } from '../data/photos';
     tone="ink"
   />
 
+  <NextLink label="Next ministry" title="Education" path="/education/" />
   <GiveBand photo={photos['outreach-night']} />
 </Layout>
 
