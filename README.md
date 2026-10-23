@@ -15,15 +15,29 @@ The redesign keeps the Trust's identity (the blue `#1470AF`, the cyan `#01B5EF`,
   - **Manyatta dome.** The dome of the hut in the Tirrim logo becomes the frame for key photographs.
   - **Cyan triangle.** The triangle from the original homepage becomes a wayfinding marker and the frame of the "Give" band.
   - **"We value" cross.** The cross diagram from the Education page is rebuilt in CSS.
+- **The manyatta skyline.** The homepage opens on a row of dome-framed photographs standing on a cyan horizon, where the dusk sky meets the sand of the page below. Every inner page carries the same horizon.
+- **Topography and sand.** A generated contour-line texture (abstract Kaisut terrain) runs behind dark and blue sections. A warm sand neutral sits alongside the brand blues and complements the desert photography.
 - **Photography first.** The images come from the existing site, cropped, cleaned, and served responsively.
 - **Motion with a purpose, at no JS cost.** Scroll-linked reveals and the "horizon" (a panorama opening from a thin line) use CSS scroll timelines. The reading-progress line in the header fills like water. Browsers without support, and visitors who prefer reduced motion, simply see the content.
 
+## Quality-of-life features
+
+- **Search (⌘K / Ctrl K, or `/`):** a keyboard-driven palette that jumps to any page, school, ministry or key section.
+- **Quick give:** a slide-in panel opened by any "Give" button. You choose a project, one-time or monthly, and a currency-aware amount. It remembers your last choice, and in the demo it hands off to a pre-filled contact message.
+- **Photo viewer:** every zoomable photo opens full-size, with arrow keys, swipe and a counter.
+- **"On this page" bar:** sticky jump links on long pages that highlight the section you're reading.
+- **Breadcrumbs,** with BreadcrumbList structured data for search engines.
+- **"Next" links** that chain the ministries and the schools together.
+- **Back to top,** with a ring that fills as you read, plus a reading-progress line in the header.
+- **Smooth page transitions** (cross-document View Transitions, where supported).
+- **Copy email** buttons with a confirmation toast, and friendly inline form validation.
+
 ## Performance
 
-- Static HTML from [Astro](https://astro.build), with CSS inlined per page and about 2.5 KB of JavaScript in total (header, mobile menu, hover preview, carousel buttons).
+- Static HTML from [Astro](https://astro.build), with CSS and a few small scripts inlined per page. There is no framework runtime, and every feature above works with native `<dialog>` elements and plain DOM code.
 - Every photo is served as responsive WebP with `srcset`/`sizes`, lazy-loaded below the fold, and has explicit dimensions (no layout shift).
 - Self-hosted fonts with a metric-matched fallback; the fonts the first screen needs are preloaded.
-- Lighthouse, mobile preset (local production build): Performance 97–100, Accessibility 100, Best Practices 100, SEO 100.
+- Lighthouse, mobile preset (local production build): Performance 96–99, Accessibility 100, Best Practices 100, SEO 100.
 
 ## Project structure
 
@@ -40,6 +54,7 @@ src/
 scripts/
   extract-assets.mjs Crops photos and logos out of the original site captures
   trace-logo.mjs     Vectorises the Tirrim mark into a single-colour SVG
+  generate-topo.mjs  Builds the contour texture (marching squares on an elevation field)
 .github/workflows/   Build and deploy to GitHub Pages on every push to main
 ```
 
@@ -64,7 +79,7 @@ node scripts/trace-logo.mjs
 ## Demo limitations
 
 - The newsletter and contact forms don't send anything yet; they confirm on screen and say so.
-- The "Give" buttons point to the contact page until a payment provider is chosen.
+- Quick give hands off to a pre-filled contact message until a payment provider is chosen.
 - The Stories page on the current site is "under construction" and has been left out.
 
 ## Content and credits
