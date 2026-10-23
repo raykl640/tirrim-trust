@@ -1,0 +1,502 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Photo from '../components/Photo.astro';
+import Arrow from '../components/Arrow.astro';
+import GiveBand from '../components/GiveBand.astro';
+import Newsletter from '../components/Newsletter.astro';
+import { photos } from '../data/photos';
+import { href } from '../lib/url';
+
+const work = [
+  {
+    name: 'Outreach',
+    tag: '…the feet',
+    desc: 'Training, evangelism and camps, and audio Bibles for those who cannot read.',
+    path: '/outreach/',
+    photo: photos['outreach-audio-bible'],
+  },
+  {
+    name: 'Education',
+    tag: 'Excellence with godliness',
+    desc: 'Tirrim Christian Schools, from nursery to secondary, and adult literacy.',
+    path: '/education/',
+    photo: photos['assembly-flag'],
+  },
+  {
+    name: 'Water',
+    tag: 'Water that never runs dry',
+    desc: 'Safe, easy access to clean water, and to the living water of the Gospel.',
+    path: '/water/',
+    photo: photos['water-jerrycans'],
+  },
+  {
+    name: 'Development',
+    tag: '…the hands',
+    desc: 'Buildings, food, emergency transport and scholarships across the Korr area.',
+    path: '/development/',
+    photo: photos['dev-building'],
+  },
+];
+
+const schoolCards = [
+  { name: 'Nursery', fact: 'Over 100 kindergarten children around Korr.', path: '/education/nursery/', photo: photos['nursery-class'] },
+  { name: 'Primary', fact: 'Ranked #1 primary school in Marsabit County.', path: '/education/primary/', photo: photos['primary-boys'], position: '50% 30%' },
+  { name: 'Junior High', fact: 'Classes 7 to 9, in a day or boarding format.', path: '/education/junior-high/', photo: photos['jhs-science'] },
+  { name: 'Secondary', fact: 'Secondary education with a Biblical worldview.', path: '/education/secondary/', photo: photos['secondary-grow'] },
+  { name: 'Adult Literacy', fact: 'Reading and writing in the Rendille mother tongue.', path: '/education/adult-literacy/', photo: photos['literacy-certificate'], position: '38% 50%' },
+];
+---
+
+<Layout>
+  <!-- Hero ------------------------------------------------------------- -->
+  <section class="hero surface-ink">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow rise" style="--d:0">Korr · Marsabit County · Northern Kenya</p>
+        <h1 class="hero__title">
+          <span class="display hero__word rise" style="--d:1">Partner</span>
+          <span class="hero__sub rise" style="--d:2">with the ministry in Northern Kenya</span>
+        </h1>
+        <p class="hero__lede serif rise" style="--d:3">
+          Among the nomadic pastoralists of Northern Kenya, the Bible is being preached to people who have never heard of
+          Jesus Christ. You can provide critical support to further this work so that all of Northern Kenya can know the
+          love of Jesus Christ.
+        </p>
+        <div class="hero__actions rise" style="--d:4">
+          <a href={href('/give/')} class="btn">Send support, be a partner <Arrow /></a>
+          <a href="#work" class="link">See the work</a>
+        </div>
+      </div>
+
+      <figure class="hero__figure">
+        <div class="media dome hero__media unveil">
+          <Photo photo={photos['literacy-celebration']} priority sizes="(min-width: 64rem) 40vw, 92vw" position="42% 50%" />
+        </div>
+        <figcaption class="caption">An adult literacy graduation</figcaption>
+      </figure>
+    </div>
+
+    <div class="container hero__meta">
+      <p><span class="hero__meta-k">Est.</span> 1999, Kaisut Desert</p>
+      <p><span class="hero__meta-k">A ministry of</span> Africa Inland Church</p>
+      <a href="#land" class="hero__cue" aria-label="Scroll to the next section"><span></span></a>
+    </div>
+  </section>
+
+  <!-- The land --------------------------------------------------------- -->
+  <section class="land section" id="land">
+    <div class="container grid-12 land__head">
+      <p class="eyebrow land__eyebrow reveal"><span class="num">01</span> The land</p>
+      <div class="land__copy">
+        <h2 class="h2 reveal">A dry, barren desert land.</h2>
+        <p class="lede land__lede reveal">
+          The northern part of Kenya is one of the driest and poorest regions in the country. This describes the
+          physical <em>and</em> the spiritual situation. The nomadic lifestyle creates an additional challenge to
+          furthering the Gospel of Jesus Christ.
+        </p>
+      </div>
+    </div>
+
+    <figure class="land__horizon">
+      <div class="media horizon">
+        <Photo photo={photos['korr-mountain']} sizes="100vw" />
+      </div>
+      <figcaption class="container caption">Marsabit County, Northern Kenya. AIC Korr founded the Tirrim Trust in the Kaisut Desert in 1999.</figcaption>
+    </figure>
+
+    <div class="container grid-12 land__statement">
+      <svg class="land__drop reveal" viewBox="0 0 40 56" aria-hidden="true">
+        <path d="M20 2C14 14 3 26 3 37a17 17 0 0 0 34 0C37 26 26 14 20 2Z" />
+      </svg>
+      <p class="h3 land__mission reveal">
+        The Tirrim Trust helps to reach the <span class="accent">nomadic communities</span> with the{' '}
+        <span class="accent">Word of God</span>.
+      </p>
+    </div>
+
+    <dl class="container stats">
+      <div class="stat reveal">
+        <dt class="stat__n">1999</dt>
+        <dd>Founded by AIC Korr in the Kaisut Desert</dd>
+      </div>
+      <div class="stat reveal">
+        <dt class="stat__n">500<span>+</span></dt>
+        <dd>Pupils at Tirrim Primary, class 1 to class 8</dd>
+      </div>
+      <div class="stat reveal">
+        <dt class="stat__n"><span>No.</span>1</dt>
+        <dd>Primary school in Marsabit County</dd>
+      </div>
+      <div class="stat reveal">
+        <dt class="stat__n">2018</dt>
+        <dd>The New Testament presented in Rendille</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- The work --------------------------------------------------------- -->
+  <section class="work section surface-ink" id="work" data-work>
+    <div class="container">
+      <div class="grid-12 work__head">
+        <p class="eyebrow work__eyebrow reveal"><span class="num">02</span> Who you are partnering with</p>
+        <h2 class="h2 work__title reveal">Four ministries.<br /><em>One centre: Christ.</em></h2>
+        <p class="work__intro muted reveal">
+          Outreach, education, water and development, all Christ-centred, so that all of Northern Kenya can know the
+          love of Jesus Christ.
+        </p>
+      </div>
+
+      <ol role="list" class="work__list">
+        {
+          work.map((item, i) => (
+            <li class="reveal">
+              <a href={href(item.path)} class="work__row" data-index={i}>
+                <span class="work__num">0{i + 1}</span>
+                <span class="work__name">{item.name}</span>
+                <span class="work__tag">{item.tag}</span>
+                <span class="work__desc">{item.desc}</span>
+                <span class="work__thumb media dome--wide">
+                  <Photo photo={item.photo} sizes="7rem" />
+                </span>
+                <span class="work__go"><Arrow direction="up-right" /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="work__preview" aria-hidden="true" data-preview>
+      {
+        work.map((item) => (
+          <div class="work__preview-img media dome">
+            <Photo photo={item.photo} sizes="22rem" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Schools ---------------------------------------------------------- -->
+  <section class="schools section">
+    <div class="container grid-12 schools__head">
+      <p class="eyebrow schools__eyebrow reveal"><span class="num">03</span> Tirrim Christian Schools</p>
+      <h2 class="h2 schools__title reveal">Excellence<br />with godliness.</h2>
+      <div class="schools__aside reveal">
+        <p class="muted">
+          Excellent Biblical education for the people of Northern Kenya, producing leaders who can help build
+          self-sufficient communities where Christ is preeminent in every aspect of life.
+        </p>
+        <div class="schools__controls">
+          <a href={href('/education/')} class="link">Explore education <Arrow /></a>
+          <div class="schools__btns">
+            <button class="round" data-scroll="-1" aria-label="Previous school"><Arrow direction="left" /></button>
+            <button class="round" data-scroll="1" aria-label="Next school"><Arrow /></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="schools__track" data-track>
+      {
+        schoolCards.map((s, i) => (
+          <a href={href(s.path)} class="school">
+            <div class="media school__media">
+              <Photo photo={s.photo} sizes="(min-width: 64rem) 26rem, 78vw" position={s.position} />
+            </div>
+            <div class="school__body">
+              <span class="school__num">0{i + 1}</span>
+              <h3 class="h4 school__name">{s.name}</h3>
+              <p class="school__fact">{s.fact}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Testimony -------------------------------------------------------- -->
+  <section class="voice section surface-sky">
+    <div class="container grid-12 voice__inner">
+      <figure class="voice__figure reveal-media">
+        <div class="media dome voice__media">
+          <Photo photo={photos['literacy-tree-class']} sizes="(min-width: 64rem) 36vw, 90vw" />
+        </div>
+      </figure>
+      <figure class="voice__quote reveal">
+        <p class="eyebrow">Nareyo · Literacy teacher</p>
+        <blockquote>
+          <p>“I started my schooling under a tree, and this is where Jesus met me… I met the Lord, who knows my language.”</p>
+        </blockquote>
+        <a href={href('/education/adult-literacy/')} class="link">The adult literacy programme <Arrow /></a>
+      </figure>
+    </div>
+  </section>
+
+  <GiveBand />
+  <Newsletter />
+</Layout>
+
+<script>
+  // Ministries index: a photograph trails the cursor over the hovered row.
+  const section = document.querySelector<HTMLElement>('[data-work]');
+  const preview = section?.querySelector<HTMLElement>('[data-preview]');
+  if (section && preview && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const imgs = [...preview.children] as HTMLElement[];
+    let x = 0, y = 0, cx = 0, cy = 0, raf = 0;
+    const loop = () => {
+      cx += (x - cx) * 0.14;
+      cy += (y - cy) * 0.14;
+      preview.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.5 ? requestAnimationFrame(loop) : 0;
+    };
+    section.addEventListener('pointermove', (e) => {
+      const r = section.getBoundingClientRect();
+      x = e.clientX - r.left;
+      y = e.clientY - r.top;
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+    section.querySelectorAll<HTMLElement>('.work__row').forEach((row) => {
+      row.addEventListener('pointerenter', () => {
+        const i = Number(row.dataset.index);
+        imgs.forEach((img, j) => img.toggleAttribute('data-on', i === j));
+        preview.toggleAttribute('data-on', true);
+      });
+      row.addEventListener('pointerleave', () => preview.toggleAttribute('data-on', false));
+    });
+  }
+
+  // Schools rail.
+  const track = document.querySelector<HTMLElement>('[data-track]');
+  document.querySelectorAll<HTMLButtonElement>('[data-scroll]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const card = track?.firstElementChild as HTMLElement | null;
+      if (!track || !card) return;
+      track.scrollBy({ left: Number(btn.dataset.scroll) * (card.offsetWidth + 24), behavior: 'smooth' });
+    }),
+  );
+</script>
+
+<style>
+  /* Hero */
+  .hero { padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4.5rem)); min-height: 100svh; display: flex; flex-direction: column; }
+  .hero__grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1rem, 2.4vw, 2.5rem);
+    row-gap: 3rem;
+    align-items: end;
+  }
+  .hero__text { grid-column: 1 / span 7; padding-bottom: clamp(1rem, 3vw, 3rem); }
+  .hero__title { display: block; margin-block: 1.5rem 2rem; }
+  .hero__word { display: block; font-size: min(13vw, 12.75rem); color: #fff; margin-left: -0.05em; }
+  .hero__sub {
+    display: block;
+    margin-top: 0.85rem;
+    font-size: var(--step-3);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    color: var(--cyan);
+    max-width: 18ch;
+  }
+  .hero__lede { font-size: var(--step-1); line-height: 1.55; color: rgb(255 255 255 / 0.75); max-width: 46ch; }
+  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 2.25rem; }
+  .hero__figure { grid-column: 8 / -1; }
+  .hero__media { aspect-ratio: 4 / 5; max-height: calc(100svh - 12rem); width: 100%; }
+  .hero__meta {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-block: 1.4rem;
+    border-top: 1px solid var(--ink-line);
+    font-size: 0.875rem;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .hero__meta-k { color: rgb(255 255 255 / 0.45); margin-right: 0.35rem; }
+  /* The downward cyan triangle from the original homepage, as a scroll cue. */
+  .hero__cue { margin-left: auto; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
+  .hero__cue span { width: 1.1rem; height: 0.8rem; background: var(--cyan); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__cue span { animation: bob 2.4s var(--ease) infinite; }
+  }
+  @keyframes bob { 50% { transform: translateY(5px); } }
+
+  @media (max-width: 64rem) {
+    .hero { min-height: auto; }
+    .hero__text, .hero__figure { grid-column: 1 / -1; }
+    .hero__word { font-size: min(24vw, 11rem); }
+    .hero__media {
+      aspect-ratio: 16 / 11;
+      border-radius: 50% 50% var(--radius) var(--radius) / 60% 60% var(--radius) var(--radius);
+    }
+    .hero__meta p:nth-child(2) { display: none; }
+  }
+
+  /* Land */
+  .land__eyebrow { grid-column: 1 / span 4; align-self: start; padding-top: 0.6rem; }
+  .land__copy { grid-column: 5 / -1; }
+  .land__lede { margin-top: 2rem; max-width: 40ch; color: var(--muted); }
+  .land__lede em { color: var(--text); }
+  .land__horizon { margin-block: clamp(4rem, 8vw, 7rem); }
+  .land__horizon .media { width: 100%; aspect-ratio: 1440 / 340; min-height: 14rem; background: var(--paper); }
+  .land__statement { align-items: start; }
+  .land__drop { grid-column: 2 / span 2; width: clamp(2.5rem, 5vw, 4rem); justify-self: end; fill: none; stroke: var(--cyan); stroke-width: 2; margin-top: 0.4rem; }
+  .land__mission { grid-column: 5 / span 7; font-size: var(--step-3); }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: clamp(4rem, 8vw, 7rem);
+  }
+  .stat { padding: 1.5rem clamp(1rem, 2vw, 2rem) 0 0; border-top: 1px solid var(--text); }
+  .stat + .stat { padding-left: clamp(1rem, 2vw, 2rem); border-left: 1px solid var(--line); }
+  .stat__n {
+    font-size: var(--step-4);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat__n span { font-size: 0.5em; vertical-align: 0.7em; margin-inline: 0.04em; letter-spacing: 0; }
+  .stat dd { margin-top: 0.9rem; font-size: 0.9375rem; color: var(--muted); max-width: 22ch; line-height: 1.45; }
+  @media (max-width: 52rem) {
+    .land__eyebrow, .land__copy, .land__mission { grid-column: 1 / -1; }
+    .land__eyebrow { margin-bottom: 1.5rem; }
+    .land__drop { grid-column: 1 / -1; justify-self: start; margin-bottom: 1.25rem; }
+    .stats { grid-template-columns: 1fr 1fr; row-gap: 2.5rem; }
+    .stat + .stat:nth-child(3) { border-left: 0; padding-left: 0; }
+  }
+
+  /* Work */
+  .work { position: relative; overflow: hidden; }
+  .work__head { row-gap: 2rem; align-items: end; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .work__eyebrow { grid-column: 1 / -1; }
+  .work__title { grid-column: 1 / span 8; }
+  .work__title em { font-family: var(--serif); font-weight: 300; color: var(--cyan); letter-spacing: -0.035em; }
+  .work__intro { grid-column: 9 / -1; font-size: 1.0625rem; max-width: 32ch; }
+  .work__list { border-top: 1px solid var(--ink-line); }
+  .work__list li { border-bottom: 1px solid var(--ink-line); }
+  .work__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr) 3rem;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    transition: color 0.4s var(--ease);
+  }
+  .work__num { font-size: 0.8125rem; color: rgb(255 255 255 / 0.45); font-variant-numeric: tabular-nums; }
+  .work__name {
+    font-size: var(--step-4);
+    font-weight: 500;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    transition: transform 0.6s var(--ease), color 0.4s;
+  }
+  .work__tag { font-family: var(--serif); font-style: italic; font-size: var(--step-1); color: var(--cyan); }
+  .work__desc { font-size: 0.9375rem; color: rgb(255 255 255 / 0.6); max-width: 34ch; }
+  .work__thumb { display: none; }
+  .work__go {
+    width: 3rem; height: 3rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--ink-line);
+    transition: background 0.4s var(--ease), border-color 0.4s, color 0.4s;
+  }
+  .work__go :global(svg) { width: 1.1rem; }
+  .work__row:hover .work__name { transform: translateX(1rem); color: var(--cyan); }
+  .work__row:hover .work__go { background: var(--cyan); border-color: var(--cyan); color: var(--ink); }
+
+  .work__preview {
+    position: absolute;
+    top: 0; left: 0;
+    width: 17rem;
+    aspect-ratio: 4 / 5;
+    margin: -10rem 0 0 -8.5rem;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    scale: 0.85;
+    transition: opacity 0.35s, scale 0.5s var(--ease);
+  }
+  .work__preview[data-on] { opacity: 1; scale: 1; }
+  .work__preview-img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s; }
+  .work__preview-img[data-on] { opacity: 1; }
+
+  @media (max-width: 64rem) {
+    .work__title, .work__intro { grid-column: 1 / -1; }
+    .work__row { grid-template-columns: 2.25rem minmax(0, 1fr) 5.5rem; row-gap: 0.4rem; }
+    .work__num { grid-row: 1 / span 3; align-self: start; padding-top: 0.6rem; }
+    .work__name, .work__tag, .work__desc { grid-column: 2; }
+    .work__thumb { display: block; grid-column: 3; grid-row: 1 / span 3; aspect-ratio: 1; }
+    .work__go, .work__preview { display: none; }
+  }
+
+  /* Schools */
+  .schools { overflow: hidden; }
+  .schools__head { row-gap: 2rem; align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .schools__eyebrow { grid-column: 1 / -1; }
+  .schools__title { grid-column: 1 / span 7; }
+  .schools__aside { grid-column: 8 / -1; }
+  .schools__aside p { max-width: 40ch; }
+  .schools__controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.75rem; }
+  .schools__btns { display: flex; gap: 0.5rem; }
+  .round {
+    width: 3rem; height: 3rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .round :global(svg) { width: 1.1rem; }
+  .round:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .schools__track {
+    --edge: max(var(--gutter), calc((100vw - var(--max)) / 2));
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(78vw, 26rem);
+    gap: 1.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--edge);
+    padding-inline: var(--edge);
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .school { scroll-snap-align: start; display: block; }
+  .school__media { aspect-ratio: 4 / 5; border-radius: var(--radius); }
+  .school__media :global(img) { transition: transform 0.9s var(--ease); }
+  .school:hover .school__media :global(img) { transform: scale(1.05); }
+  .school__body { display: grid; grid-template-columns: auto 1fr; column-gap: 1rem; padding-top: 1.25rem; }
+  .school__num { font-size: 0.8125rem; color: var(--muted); padding-top: 0.35rem; font-variant-numeric: tabular-nums; }
+  .school__name { transition: color 0.3s; }
+  .school:hover .school__name { color: var(--blue); }
+  .school__fact { grid-column: 2; margin-top: 0.4rem; color: var(--muted); font-size: 0.9375rem; }
+  @media (max-width: 52rem) {
+    .schools__title, .schools__aside { grid-column: 1 / -1; }
+  }
+
+  /* Voice */
+  .voice__inner { align-items: center; row-gap: 3rem; }
+  .voice__figure { grid-column: 1 / span 5; }
+  .voice__media { aspect-ratio: 4 / 5; }
+  .voice__quote { grid-column: 7 / -1; }
+  .voice__quote blockquote p {
+    margin-block: 2rem 2.5rem;
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: var(--step-4);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+  }
+  @media (max-width: 52rem) {
+    .voice__figure, .voice__quote { grid-column: 1 / -1; }
+    .voice__figure { max-width: 24rem; }
+  }
+</style>
