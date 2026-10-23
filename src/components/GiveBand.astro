@@ -17,14 +17,14 @@ const {
 } = Astro.props;
 ---
 
-<section class="give surface-blue">
+<section class="give surface-blue topo">
   <div class="container give__inner">
     <div class="give__text reveal">
       <p class="eyebrow">Who you are partnering with</p>
       <h2 class="h2 give__title" set:html={title} />
       <p class="lede give__lede">{text}</p>
       <div class="give__actions">
-        <a href={href('/give/')} class="btn">Give to the work <Arrow /></a>
+        <a href={href('/give/')} class="btn" data-give>Give to the work <Arrow /></a>
         <a href={href('/contact/')} class="btn btn--ghost">Talk to us</a>
       </div>
     </div>

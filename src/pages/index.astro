@@ -38,6 +38,15 @@ const work = [
   },
 ];
 
+// The hero skyline: relative widths and heights give the row of huts its rhythm.
+const skyline = [
+  { label: 'Outreach', tag: '…the feet', path: '/outreach/', photo: photos['outreach-audio-bible'], w: 1, h: 0.62 },
+  { label: 'Water', tag: 'Clean water', path: '/water/', photo: photos['water-jerrycans'], w: 0.78, h: 0.5 },
+  { label: 'Adult literacy', tag: 'God’s Word in Rendille', path: '/education/adult-literacy/', photo: photos['literacy-celebration'], w: 1.5, h: 1, lcp: true, position: '42% 50%' },
+  { label: 'Education', tag: 'Excellence with godliness', path: '/education/', photo: photos['school-gate'], w: 1.05, h: 0.72, position: '55% 50%' },
+  { label: 'Development', tag: '…the hands', path: '/development/', photo: photos['dev-building'], w: 0.85, h: 0.56 },
+];
+
 const schoolCards = [
   { name: 'Nursery', fact: 'Over 100 kindergarten children around Korr.', path: '/education/nursery/', photo: photos['nursery-class'] },
   { name: 'Primary', fact: 'Ranked #1 primary school in Marsabit County.', path: '/education/primary/', photo: photos['primary-boys'], position: '50% 30%' },
@@ -48,43 +57,47 @@ const schoolCards = [
 ---
 
 <Layout>
-  <!-- Hero ------------------------------------------------------------- -->
-  <section class="hero surface-ink">
-    <div class="container hero__grid">
+  <!-- Hero: a village of manyatta domes on the Kaisut horizon ----------- -->
+  <section class="hero surface-ink topo">
+    <div class="container hero__top">
       <div class="hero__text">
-        <p class="eyebrow rise" style="--d:0">Korr · Marsabit County · Northern Kenya</p>
-        <h1 class="hero__title">
-          <span class="display hero__word rise" style="--d:1">Partner</span>
-          <span class="hero__sub rise" style="--d:2">with the ministry in Northern Kenya</span>
+        <p class="eyebrow rise" style="--d:0">The Tirrim Trust · Est. 1999</p>
+        <h1 class="h1 hero__title rise" style="--d:1">
+          <span class="hero__partner">Partner</span> with the ministry in <em>Northern Kenya.</em>
         </h1>
-        <p class="hero__lede serif rise" style="--d:3">
+      </div>
+      <div class="hero__side rise" style="--d:2">
+        <p class="hero__lede serif">
           Among the nomadic pastoralists of Northern Kenya, the Bible is being preached to people who have never heard of
-          Jesus Christ. You can provide critical support to further this work so that all of Northern Kenya can know the
-          love of Jesus Christ.
+          Jesus Christ. Your support furthers this work, so that all of Northern Kenya can know His love.
         </p>
-        <div class="hero__actions rise" style="--d:4">
-          <a href={href('/give/')} class="btn">Send support, be a partner <Arrow /></a>
+        <div class="hero__actions">
+          <a href={href('/give/')} class="btn" data-give>Send support <Arrow /></a>
           <a href="#work" class="link">See the work</a>
         </div>
       </div>
-
-      <figure class="hero__figure">
-        <div class="media dome hero__media unveil">
-          <Photo photo={photos['literacy-celebration']} priority sizes="(min-width: 64rem) 40vw, 92vw" position="42% 50%" />
-        </div>
-        <figcaption class="caption">An adult literacy graduation</figcaption>
-      </figure>
     </div>
 
-    <div class="container hero__meta">
-      <p><span class="hero__meta-k">Est.</span> 1999, Kaisut Desert</p>
-      <p><span class="hero__meta-k">A ministry of</span> Africa Inland Church</p>
-      <a href="#land" class="hero__cue" aria-label="Scroll to the next section"><span></span></a>
-    </div>
+    <nav class="container skyline" aria-label="Ministries">
+      {
+        skyline.map((d, i) => (
+          <a href={href(d.path)} class="dome-link" style={`--h:${d.h}; --w:${d.w}; --i:${i}`}>
+            <span class="media dome skyline__dome">
+              <Photo photo={d.photo} priority={d.lcp} sizes={d.lcp ? '(min-width: 64rem) 26vw, 45vw' : '(min-width: 64rem) 18vw, 30vw'} position={d.position} />
+            </span>
+            <span class="skyline__label">
+              <span class="skyline__num">0{i + 1}</span>
+              <span class="skyline__name">{d.label}</span>
+              <span class="skyline__tag">{d.tag}</span>
+            </span>
+          </a>
+        ))
+      }
+    </nav>
   </section>
 
   <!-- The land --------------------------------------------------------- -->
-  <section class="land section" id="land">
+  <section class="land section surface-sand" id="land">
     <div class="container grid-12 land__head">
       <p class="eyebrow land__eyebrow reveal"><span class="num">01</span> The land</p>
       <div class="land__copy">
@@ -135,7 +148,7 @@ const schoolCards = [
   </section>
 
   <!-- The work --------------------------------------------------------- -->
-  <section class="work section surface-ink" id="work" data-work>
+  <section class="work section surface-ink topo" id="work" data-work>
     <div class="container">
       <div class="grid-12 work__head">
         <p class="eyebrow work__eyebrow reveal"><span class="num">02</span> Who you are partnering with</p>
@@ -216,21 +229,21 @@ const schoolCards = [
   </section>
 
   <!-- Testimony -------------------------------------------------------- -->
-  <section class="voice section surface-sky">
-    <div class="container grid-12 voice__inner">
-      <figure class="voice__figure reveal-media">
-        <div class="media dome voice__media">
-          <Photo photo={photos['literacy-tree-class']} sizes="(min-width: 64rem) 36vw, 90vw" />
-        </div>
-      </figure>
-      <figure class="voice__quote reveal">
-        <p class="eyebrow">Nareyo · Literacy teacher</p>
-        <blockquote>
-          <p>“I started my schooling under a tree, and this is where Jesus met me… I met the Lord, who knows my language.”</p>
-        </blockquote>
-        <a href={href('/education/adult-literacy/')} class="link">The adult literacy programme <Arrow /></a>
-      </figure>
-    </div>
+  <section class="voice surface-sand topo">
+    <figure class="voice__photo media reveal-media" data-zoom>
+      <Photo photo={photos['literacy-tree-class']} sizes="(min-width: 52rem) 50vw, 100vw" />
+    </figure>
+    <figure class="voice__body reveal">
+      <p class="eyebrow"><span class="num">04</span> In their words</p>
+      <blockquote>
+        <p>“I started my schooling under a tree, and this is where Jesus met me… I met the Lord, who knows my language.”</p>
+      </blockquote>
+      <figcaption class="voice__cite">
+        <span class="voice__name">Nareyo</span>
+        <span class="muted">Literacy teacher, Tirrim adult literacy programme</span>
+      </figcaption>
+      <a href={href('/education/adult-literacy/')} class="link">Read about adult literacy <Arrow /></a>
+    </figure>
   </section>
 
   <GiveBand />
@@ -279,60 +292,89 @@ const schoolCards = [
 
 <style>
   /* Hero */
-  .hero { padding-top: calc(var(--header-h) + clamp(2rem, 5vw, 4.5rem)); min-height: 100svh; display: flex; flex-direction: column; }
-  .hero__grid {
-    flex: 1;
+  .hero {
+    --ground: clamp(5.5rem, 9vw, 7.5rem);
+    padding-top: calc(var(--header-h) + clamp(2.5rem, 6vw, 5rem));
+    /* Dusk sky above, sand below: the section edge is the horizon. */
+    background: linear-gradient(var(--ink) 0 calc(100% - var(--ground)), var(--sand) 0);
+  }
+  .hero.topo::before { bottom: var(--ground); --topo-opacity: 0.13; }
+  .hero__top {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: clamp(1rem, 2.4vw, 2.5rem);
-    row-gap: 3rem;
+    row-gap: 2rem;
     align-items: end;
   }
-  .hero__text { grid-column: 1 / span 7; padding-bottom: clamp(1rem, 3vw, 3rem); }
-  .hero__title { display: block; margin-block: 1.5rem 2rem; }
-  .hero__word { display: block; font-size: min(13vw, 12.75rem); color: #fff; margin-left: -0.05em; }
-  .hero__sub {
-    display: block;
-    margin-top: 0.85rem;
-    font-size: var(--step-3);
-    font-weight: 400;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    color: var(--cyan);
-    max-width: 18ch;
-  }
-  .hero__lede { font-size: var(--step-1); line-height: 1.55; color: rgb(255 255 255 / 0.75); max-width: 46ch; }
-  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: 2.25rem; }
-  .hero__figure { grid-column: 8 / -1; }
-  .hero__media { aspect-ratio: 4 / 5; max-height: calc(100svh - 12rem); width: 100%; }
-  .hero__meta {
+  .hero__text { grid-column: 1 / span 7; }
+  .hero__title { margin-top: 1.5rem; max-width: 13ch; }
+  .hero__partner { color: var(--cyan); }
+  .hero__title em { font-family: var(--serif); font-style: italic; font-weight: 300; letter-spacing: -0.035em; }
+  .hero__side { grid-column: 9 / -1; padding-bottom: 0.5rem; }
+  .hero__lede { font-size: 1.0625rem; line-height: 1.6; color: rgb(255 255 255 / 0.74); }
+  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 1.75rem; }
+
+  .skyline {
+    --sky-h: clamp(13rem, 30vw, 27rem);
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: clamp(1.5rem, 4vw, 4rem);
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-    padding-block: 1.4rem;
-    border-top: 1px solid var(--ink-line);
-    font-size: 0.875rem;
-    color: rgb(255 255 255 / 0.85);
+    align-items: flex-end;
+    gap: clamp(0.5rem, 1.4vw, 1.25rem);
+    margin-top: clamp(3rem, 6vw, 4.5rem);
   }
-  .hero__meta-k { color: rgb(255 255 255 / 0.45); margin-right: 0.35rem; }
-  /* The downward cyan triangle from the original homepage, as a scroll cue. */
-  .hero__cue { margin-left: auto; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; }
-  .hero__cue span { width: 1.1rem; height: 0.8rem; background: var(--cyan); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  /* The horizon line runs edge to edge. */
+  .skyline::after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    top: var(--sky-h);
+    height: 1px;
+    background: var(--cyan);
+    opacity: 0.8;
+  }
+  .dome-link { flex: var(--w) 1 0; min-width: 0; display: grid; grid-template-rows: var(--sky-h) auto; }
+  .skyline__dome {
+    align-self: end;
+    height: calc(var(--sky-h) * var(--h));
+    border-radius: 50% 50% 0 0 / 46% 46% 0 0;
+    transition: transform 0.6s var(--ease), filter 0.4s;
+  }
+  .skyline__dome :global(img) { transition: transform 1s var(--ease); }
+  .dome-link:hover .skyline__dome { transform: translateY(-0.5rem); }
+  .dome-link:hover .skyline__dome :global(img) { transform: scale(1.06); }
+  .skyline__label {
+    display: grid;
+    gap: 0.1rem;
+    padding-top: 1rem;
+    height: var(--ground);
+    color: var(--text);
+  }
+  .skyline__num { font-size: 0.6875rem; color: var(--blue); letter-spacing: 0.1em; }
+  .skyline__name { font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.2; }
+  .skyline__tag { font-family: var(--serif); font-style: italic; font-size: 0.875rem; color: var(--muted); line-height: 1.3; }
+  .dome-link:hover .skyline__name { color: var(--blue); }
+
   @media (prefers-reduced-motion: no-preference) {
-    .hero__cue span { animation: bob 2.4s var(--ease) infinite; }
+    .skyline__dome { animation: dome-rise 1.3s var(--ease) both; animation-delay: calc(250ms + var(--i) * 90ms); }
+    .skyline__label { animation: rise 1s var(--ease) both; animation-delay: calc(600ms + var(--i) * 90ms); }
   }
-  @keyframes bob { 50% { transform: translateY(5px); } }
+  @keyframes dome-rise {
+    from { transform: translateY(14%); clip-path: inset(0 0 14% 0); }
+    to { transform: none; clip-path: inset(0); }
+  }
 
   @media (max-width: 64rem) {
-    .hero { min-height: auto; }
-    .hero__text, .hero__figure { grid-column: 1 / -1; }
-    .hero__word { font-size: min(24vw, 11rem); }
-    .hero__media {
-      aspect-ratio: 16 / 11;
-      border-radius: 50% 50% var(--radius) var(--radius) / 60% 60% var(--radius) var(--radius);
-    }
-    .hero__meta p:nth-child(2) { display: none; }
+    .hero__text, .hero__side { grid-column: 1 / -1; }
+    .hero__side { max-width: 36rem; }
+  }
+  @media (max-width: 44rem) {
+    .hero { --ground: 6rem; }
+    .skyline { --sky-h: clamp(11rem, 52vw, 15rem); }
+    .dome-link:first-child, .dome-link:last-child { display: none; }
+    .dome-link { flex: 1 1 0; }
+    .dome-link:nth-child(3) { flex-grow: 1.35; }
+    .skyline__tag { display: none; }
   }
 
   /* Land */
@@ -341,7 +383,8 @@ const schoolCards = [
   .land__lede { margin-top: 2rem; max-width: 40ch; color: var(--muted); }
   .land__lede em { color: var(--text); }
   .land__horizon { margin-block: clamp(4rem, 8vw, 7rem); }
-  .land__horizon .media { width: 100%; aspect-ratio: 1440 / 340; min-height: 14rem; background: var(--paper); }
+  .land { padding-top: clamp(2.5rem, 5vw, 4rem); }
+  .land__horizon .media { width: 100%; aspect-ratio: 1440 / 340; min-height: 14rem; background: var(--sand); }
   .land__statement { align-items: start; }
   .land__drop { grid-column: 2 / span 2; width: clamp(2.5rem, 5vw, 4rem); justify-self: end; fill: none; stroke: var(--cyan); stroke-width: 2; margin-top: 0.4rem; }
   .land__mission { grid-column: 5 / span 7; font-size: var(--step-3); }
@@ -351,7 +394,7 @@ const schoolCards = [
     margin-top: clamp(4rem, 8vw, 7rem);
   }
   .stat { padding: 1.5rem clamp(1rem, 2vw, 2rem) 0 0; border-top: 1px solid var(--text); }
-  .stat + .stat { padding-left: clamp(1rem, 2vw, 2rem); border-left: 1px solid var(--line); }
+  .stat + .stat { padding-left: clamp(1rem, 2vw, 2rem); border-left: 1px solid var(--sand-line); }
   .stat__n {
     font-size: var(--step-4);
     font-weight: 500;
@@ -482,21 +525,28 @@ const schoolCards = [
   }
 
   /* Voice */
-  .voice__inner { align-items: center; row-gap: 3rem; }
-  .voice__figure { grid-column: 1 / span 5; }
-  .voice__media { aspect-ratio: 4 / 5; }
-  .voice__quote { grid-column: 7 / -1; }
-  .voice__quote blockquote p {
-    margin-block: 2rem 2.5rem;
+  .voice { display: grid; grid-template-columns: 1fr 1fr; min-height: min(44rem, 90svh); }
+  .voice__photo { height: 100%; min-height: 22rem; }
+  .voice__body {
+    align-self: center;
+    padding: var(--section) max(var(--gutter), calc((100vw - var(--max)) / 2)) var(--section) clamp(2rem, 6vw, 6rem);
+    max-width: 46rem;
+  }
+  .voice__body blockquote p {
+    margin-block: 1.75rem 2rem;
     font-family: var(--serif);
     font-style: italic;
     font-weight: 300;
     font-size: var(--step-4);
-    line-height: 1.06;
+    line-height: 1.08;
     letter-spacing: -0.035em;
   }
+  .voice__body blockquote p::first-letter { color: var(--blue); }
+  .voice__cite { display: grid; gap: 0.15rem; padding-left: 1rem; border-left: 2px solid var(--cyan); margin-bottom: 2.25rem; font-size: 0.875rem; }
+  .voice__name { font-weight: 500; font-size: 1rem; }
   @media (max-width: 52rem) {
-    .voice__figure, .voice__quote { grid-column: 1 / -1; }
-    .voice__figure { max-width: 24rem; }
+    .voice { grid-template-columns: 1fr; }
+    .voice__photo { aspect-ratio: 4 / 3; min-height: 0; }
+    .voice__body { padding: 3.5rem var(--gutter) var(--section); }
   }
 </style>
