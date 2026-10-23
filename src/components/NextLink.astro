@@ -1,0 +1,40 @@
+---
+import Arrow from './Arrow.astro';
+import { href } from '../lib/url';
+
+interface Props {
+  label: string;
+  title: string;
+  path: string;
+}
+const { label, title, path } = Astro.props;
+---
+
+<nav class="container next" aria-label={label}>
+  <a href={href(path)} class="next__link">
+    <span class="eyebrow">{label}</span>
+    <span class="next__name">{title}</span>
+    <span class="next__go"><Arrow /></span>
+  </a>
+</nav>
+
+<style>
+  .next { padding-block: var(--section); }
+  .next__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--text);
+  }
+  .next__link .eyebrow { grid-column: 1 / -1; }
+  .next__name { font-size: var(--step-5); font-weight: 500; letter-spacing: -0.05em; line-height: 0.95; transition: color 0.3s; }
+  .next__go {
+    width: clamp(3.25rem, 6vw, 4.75rem); aspect-ratio: 1; display: grid; place-items: center;
+    border-radius: 50%; background: var(--cyan); transition: transform 0.5s var(--ease);
+  }
+  .next__go :global(svg) { width: 40%; }
+  .next__link:hover .next__name { color: var(--blue); }
+  .next__link:hover .next__go { transform: rotate(-45deg); }
+</style>

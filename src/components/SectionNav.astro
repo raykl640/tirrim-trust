@@ -1,0 +1,76 @@
+---
+// Sticky "on this page" bar: jump links that follow along as you read.
+interface Props {
+  items: { id: string; label: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav class="secnav" aria-label="On this page" data-secnav>
+  <div class="container secnav__inner">
+    <span class="secnav__label">On this page</span>
+    <ul role="list" class="secnav__list">
+      {items.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}
+    </ul>
+  </div>
+</nav>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-secnav]').forEach((nav) => {
+    const list = nav.querySelector<HTMLElement>('ul')!;
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a')];
+    // Fade the edge only when there is more to scroll to.
+    const fit = () => list.toggleAttribute('data-overflow', list.scrollWidth > list.clientWidth + 1);
+    fit();
+    addEventListener('resize', fit);
+    const targets = links.map((a) => document.querySelector<HTMLElement>(a.hash)).filter(Boolean) as HTMLElement[];
+    const setActive = (id: string) =>
+      links.forEach((a) => {
+        const on = a.hash === `#${id}`;
+        a.toggleAttribute('aria-current', on);
+        // Scroll only the bar itself, never the page.
+        if (on) list.scrollTo({ left: a.offsetLeft - list.clientWidth / 2 + a.offsetWidth / 2, behavior: 'smooth' });
+      });
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-35% 0px -55% 0px' },
+    );
+    targets.forEach((t) => io.observe(t));
+  });
+</script>
+
+<style>
+  .secnav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(255 255 255 / 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    transition: top 0.5s var(--ease);
+  }
+  /* Sit under the header whenever the header is showing. */
+  :global(.header[data-scrolled]:not([data-hidden])) ~ :global(main) .secnav { top: calc(var(--header-h) - 1px); }
+  .secnav__inner { display: flex; align-items: center; gap: 1.5rem; }
+  .secnav__label { flex: none; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .secnav__list { position: relative; display: flex; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; }
+  .secnav__list[data-overflow] { mask: linear-gradient(90deg, #000 85%, transparent); }
+  .secnav__list::-webkit-scrollbar { display: none; }
+  .secnav a {
+    display: block;
+    white-space: nowrap;
+    padding: 1rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    position: relative;
+    transition: color 0.2s;
+  }
+  .secnav a::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: -1px; height: 2px; background: var(--cyan); transform: scaleX(0); transition: transform 0.35s var(--ease); }
+  .secnav a:hover, .secnav a[aria-current] { color: var(--text); }
+  .secnav a[aria-current]::after { transform: scaleX(1); }
+  :global(html:has(.secnav)) { scroll-padding-top: calc(var(--header-h) + 4rem); }
+  @media (max-width: 40rem) { .secnav__label { display: none; } }
+</style>

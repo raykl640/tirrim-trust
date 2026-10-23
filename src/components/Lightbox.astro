@@ -1,0 +1,101 @@
+---
+// Full-screen photo viewer for any image inside an element marked [data-zoom].
+---
+
+<dialog class="lb" aria-label="Photo viewer" data-lightbox>
+  <figure class="lb__figure">
+    <img alt="" data-lb-img />
+    <figcaption class="lb__caption">
+      <span data-lb-caption></span>
+      <span class="lb__count" data-lb-count></span>
+    </figcaption>
+  </figure>
+  <button class="lb__btn lb__close" data-lb-close aria-label="Close photo viewer">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
+  </button>
+  <button class="lb__btn lb__prev" data-lb-step="-1" aria-label="Previous photo">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M17 10H4M9 4.5 3.5 10 9 15.5" /></svg>
+  </button>
+  <button class="lb__btn lb__next" data-lb-step="1" aria-label="Next photo">
+    <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h13M11 4.5 16.5 10 11 15.5" /></svg>
+  </button>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]')!;
+  const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+  const caption = dialog.querySelector<HTMLElement>('[data-lb-caption]')!;
+  const count = dialog.querySelector<HTMLElement>('[data-lb-count]')!;
+  const items = [...document.querySelectorAll<HTMLImageElement>('[data-zoom] img')];
+  let index = 0;
+
+  // The widest candidate in the srcset is the sharpest version available.
+  const largest = (el: HTMLImageElement) => {
+    const set = (el.closest('picture')?.querySelector('source')?.getAttribute('srcset') || el.srcset || '')
+      .split(',').map((s) => s.trim().split(/\s+/)).filter((p) => p[0]);
+    set.sort((a, b) => parseInt(b[1] || '0') - parseInt(a[1] || '0'));
+    return set[0]?.[0] || el.currentSrc || el.src;
+  };
+
+  const show = (i: number) => {
+    index = (i + items.length) % items.length;
+    const el = items[index];
+    img.src = largest(el);
+    img.alt = el.alt;
+    caption.textContent = el.alt;
+    count.textContent = items.length > 1 ? `${index + 1} / ${items.length}` : '';
+  };
+
+  items.forEach((el, i) => {
+    const holder = el.closest<HTMLElement>('[data-zoom]')!;
+    holder.tabIndex = 0;
+    holder.setAttribute('role', 'button');
+    holder.setAttribute('aria-label', `Enlarge photo: ${el.alt}`);
+    const go = () => { show(i); dialog.showModal(); };
+    holder.addEventListener('click', go);
+    holder.addEventListener('keydown', (e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), go()));
+  });
+
+  dialog.querySelectorAll<HTMLButtonElement>('[data-lb-step]').forEach((b) =>
+    b.addEventListener('click', () => show(index + Number(b.dataset.lbStep))),
+  );
+  dialog.querySelector('[data-lb-close]')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => e.target === dialog && dialog.close());
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') show(index + 1);
+    if (e.key === 'ArrowLeft') show(index - 1);
+  });
+  let startX = 0;
+  dialog.addEventListener('pointerdown', (e) => (startX = e.clientX));
+  dialog.addEventListener('pointerup', (e) => {
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+  });
+  if (items.length < 2) dialog.querySelectorAll<HTMLElement>('[data-lb-step]').forEach((b) => (b.hidden = true));
+</script>
+
+<style>
+  .lb { width: 100vw; height: 100dvh; background: rgb(4 12 19 / 0.96); color: #fff; }
+  .lb::backdrop { background: transparent; }
+  .lb__figure { height: 100%; display: grid; grid-template-rows: 1fr auto; place-items: center; padding: 4.5rem clamp(1rem, 6vw, 6rem) 1.5rem; gap: 1rem; }
+  .lb__figure img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; user-select: none; }
+  .lb[open] img { animation: lb-in 0.4s var(--ease); }
+  @keyframes lb-in { from { opacity: 0; transform: scale(0.97); } }
+  .lb__caption { display: flex; gap: 1.5rem; justify-content: space-between; width: min(100%, 60rem); font-size: 0.875rem; color: rgb(255 255 255 / 0.75); }
+  .lb__count { font-variant-numeric: tabular-nums; flex: none; }
+  .lb__btn {
+    position: absolute; width: 3rem; height: 3rem; display: grid; place-items: center;
+    border-radius: 50%; border: 1px solid rgb(255 255 255 / 0.25); color: #fff;
+    transition: background 0.2s, color 0.2s;
+  }
+  .lb__btn:hover { background: #fff; color: var(--ink); }
+  .lb__btn svg { width: 1.1rem; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .lb__close { top: 1rem; right: 1rem; }
+  .lb__prev, .lb__next { top: 50%; translate: 0 -50%; }
+  .lb__prev { left: 1rem; }
+  .lb__next { right: 1rem; }
+  @media (max-width: 40rem) {
+    .lb__prev, .lb__next { top: auto; bottom: 1rem; translate: none; }
+    .lb__figure { padding-bottom: 5rem; }
+  }
+</style>

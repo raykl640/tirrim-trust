@@ -1,0 +1,215 @@
+---
+import Arrow from './Arrow.astro';
+import { href } from '../lib/url';
+
+const projects = [
+  { id: 'needed', name: 'Where most needed', note: 'Let the Trust direct your gift' },
+  { id: 'rendille', name: 'Rendille Ministries', note: 'Food, emergency transport, care for the sick' },
+  { id: 'reap', name: 'Rendille Education (REAP)', note: 'Scholarships for Tirrim Christian Schools' },
+  { id: 'schools', name: 'Tirrim Schools', note: 'Books, labs, salaries and daily operations' },
+];
+---
+
+<dialog class="drawer" id="give-drawer" aria-labelledby="give-title" data-give-drawer>
+  <form class="drawer__panel" method="dialog" data-give-form data-contact={href('/contact/')}>
+    <header class="drawer__head">
+      <div>
+        <p class="eyebrow">Quick give</p>
+        <h2 class="h3" id="give-title">Be a partner.</h2>
+      </div>
+      <button type="button" class="drawer__close" data-give-close aria-label="Close">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
+      </button>
+    </header>
+
+    <div class="drawer__body">
+      <fieldset class="drawer__group">
+        <legend>Where should your gift go?</legend>
+        <div class="drawer__projects">
+          {
+            projects.map((p, i) => (
+              <label class="opt">
+                <input type="radio" name="project" value={p.id} checked={i === 0} />
+                <span class="opt__name">{p.name}</span>
+                <span class="opt__note">{p.note}</span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="drawer__group">
+        <legend>How often?</legend>
+        <div class="seg">
+          <label><input type="radio" name="freq" value="once" checked /><span>One-time</span></label>
+          <label><input type="radio" name="freq" value="monthly" /><span>Monthly</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="drawer__group">
+        <legend class="drawer__legend-row">
+          Amount
+          <select name="currency" aria-label="Currency" data-currency>
+            <option value="USD">USD $</option>
+            <option value="KES">KES</option>
+            <option value="GBP">GBP £</option>
+            <option value="EUR">EUR €</option>
+          </select>
+        </legend>
+        <div class="chips" data-chips></div>
+        <label class="drawer__other">
+          <span>Other amount</span>
+          <input type="number" name="other" min="1" step="1" inputmode="numeric" placeholder="Enter an amount" data-other />
+        </label>
+      </fieldset>
+    </div>
+
+    <footer class="drawer__foot">
+      <p class="drawer__summary" aria-live="polite" data-summary></p>
+      <button type="submit" class="btn btn--blue drawer__submit">Continue <Arrow /></button>
+      <p class="drawer__note">Online giving isn’t connected in this demo. Continuing pre-fills a message to the Trust.</p>
+    </footer>
+  </form>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-give-drawer]')!;
+  const form = dialog.querySelector<HTMLFormElement>('[data-give-form]')!;
+  const chips = form.querySelector<HTMLElement>('[data-chips]')!;
+  const other = form.querySelector<HTMLInputElement>('[data-other]')!;
+  const currency = form.querySelector<HTMLSelectElement>('[data-currency]')!;
+  const summary = form.querySelector<HTMLElement>('[data-summary]')!;
+
+  const presets: Record<string, number[]> = {
+    USD: [25, 50, 100, 250],
+    GBP: [20, 40, 80, 200],
+    EUR: [25, 50, 100, 250],
+    KES: [1000, 2500, 5000, 10000],
+  };
+  const fmt = (n: number) => new Intl.NumberFormat('en', { style: 'currency', currency: currency.value, maximumFractionDigits: 0 }).format(n);
+  let amount = 50;
+
+  const store = {
+    get: () => { try { return JSON.parse(localStorage.getItem('tirrim-give') || 'null'); } catch { return null; } },
+    set: (v: object) => { try { localStorage.setItem('tirrim-give', JSON.stringify(v)); } catch {} },
+  };
+
+  const drawChips = () => {
+    const list = presets[currency.value];
+    if (!list.includes(amount) && !other.value) amount = list[1];
+    chips.innerHTML = list
+      .map((n) => `<button type="button" class="chip" aria-pressed="${!other.value && n === amount}" data-amount="${n}">${fmt(n)}</button>`)
+      .join('');
+  };
+  const value = () => (other.value ? Math.max(0, Math.round(Number(other.value))) : amount);
+  const update = () => {
+    const data = new FormData(form);
+    const project = form.querySelector<HTMLInputElement>('input[name=project]:checked')!;
+    const name = project.parentElement!.querySelector('.opt__name')!.textContent;
+    const monthly = data.get('freq') === 'monthly';
+    const v = value();
+    summary.innerHTML = v
+      ? `${monthly ? 'A monthly' : 'A one-time'} gift of <strong>${fmt(v)}</strong> to <strong>${name}</strong>.`
+      : 'Choose or enter an amount.';
+    form.querySelector<HTMLButtonElement>('[type=submit]')!.disabled = !v;
+  };
+
+  chips.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-amount]');
+    if (!b) return;
+    amount = Number(b.dataset.amount);
+    other.value = '';
+    drawChips();
+    update();
+  });
+  other.addEventListener('input', () => { drawChips(); update(); });
+  currency.addEventListener('change', () => { other.value = ''; amount = presets[currency.value][1]; drawChips(); update(); });
+  form.addEventListener('change', update);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const choice = { project: data.get('project'), freq: data.get('freq'), currency: currency.value, amount: value() };
+    store.set(choice);
+    const params = new URLSearchParams({ topic: 'giving', ...Object.fromEntries(Object.entries(choice).map(([k, v]) => [k, String(v)])) });
+    location.href = `${form.dataset.contact}?${params}`;
+  });
+
+  const open = (project?: string) => {
+    const saved = store.get();
+    if (saved && !project) {
+      currency.value = saved.currency ?? 'USD';
+      amount = saved.amount ?? amount;
+      form.querySelector<HTMLInputElement>(`input[name=freq][value=${saved.freq}]`)?.click();
+      project = saved.project;
+    }
+    if (project) form.querySelector<HTMLInputElement>(`input[name=project][value=${project}]`)?.click();
+    drawChips();
+    update();
+    dialog.showModal();
+  };
+
+  dialog.querySelector('[data-give-close]')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => e.target === dialog && dialog.close());
+  // Any "give" link opens the drawer; without JavaScript it still goes to /give/.
+  document.addEventListener('click', (e) => {
+    const trigger = (e.target as HTMLElement).closest<HTMLElement>('[data-give]');
+    if (!trigger || e.metaKey || e.ctrlKey) return;
+    e.preventDefault();
+    open(trigger.dataset.give || undefined);
+  });
+</script>
+
+<style>
+  .drawer {
+    margin: 0 0 0 auto;
+    height: 100dvh;
+    width: min(30rem, 100vw);
+    background: transparent;
+  }
+  .drawer__panel { display: flex; flex-direction: column; height: 100%; background: #fff; color: var(--text); }
+  .drawer[open] .drawer__panel { animation: slide 0.45s var(--ease); }
+  @keyframes slide { from { transform: translateX(100%); } }
+  .drawer__head {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    padding: 1.75rem 1.75rem 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .drawer__head .h3 { margin-top: 0.75rem; }
+  .drawer__close { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); }
+  .drawer__close svg { width: 1rem; stroke: currentColor; stroke-width: 1.6; }
+  .drawer__close:hover { background: var(--ink); color: #fff; }
+  .drawer__body { flex: 1; overflow-y: auto; padding: 0.5rem 1.75rem 1.5rem; }
+  .drawer__group { border: 0; padding: 0; margin-top: 1.5rem; min-width: 0; }
+  .drawer__group legend { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding: 0; }
+  .drawer__legend-row { display: flex; width: 100%; justify-content: space-between; align-items: center; }
+  .drawer__legend-row select { font-size: 0.8125rem; letter-spacing: 0; text-transform: none; padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 4px; background: #fff; color: var(--text); }
+
+  .drawer__projects { display: grid; gap: 0.5rem; }
+  .opt { position: relative; display: grid; padding: 0.85rem 1rem 0.85rem 2.75rem; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .opt input { position: absolute; left: 1rem; top: 1.05rem; accent-color: var(--blue); width: 1rem; height: 1rem; }
+  .opt__name { font-size: 0.9375rem; font-weight: 500; }
+  .opt__note { font-size: 0.8125rem; color: var(--muted); }
+  .opt:has(input:checked) { border-color: var(--blue); background: var(--sky-wash); }
+
+  .seg { display: grid; grid-template-columns: 1fr 1fr; padding: 0.25rem; background: var(--mist); border-radius: 6px; }
+  .seg label { position: relative; }
+  .seg input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .seg span { display: block; text-align: center; padding: 0.6rem; font-size: 0.875rem; font-weight: 500; border-radius: 4px; transition: background 0.2s, box-shadow 0.2s; }
+  .seg input:checked + span { background: #fff; box-shadow: 0 1px 3px rgb(7 21 32 / 0.15); color: var(--blue); }
+  .seg input:focus-visible + span { outline: 2px solid var(--cyan); }
+
+  .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .chips :global(.chip) { padding: 0.75rem 0.25rem; border: 1px solid var(--line); border-radius: 6px; font-size: 0.875rem; font-weight: 500; transition: 0.2s; }
+  .chips :global(.chip:hover) { border-color: var(--blue); }
+  .chips :global(.chip[aria-pressed='true']) { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .drawer__other { display: grid; gap: 0.35rem; margin-top: 0.75rem; font-size: 0.8125rem; color: var(--muted); }
+  .drawer__other input { padding: 0.7rem 0.85rem; border: 1px solid var(--line); border-radius: 6px; font-size: 0.9375rem; color: var(--text); }
+  .drawer__other input:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+
+  .drawer__foot { padding: 1.25rem 1.75rem 1.75rem; border-top: 1px solid var(--line); background: var(--sand); }
+  .drawer__summary { font-size: 0.9375rem; min-height: 2.8em; }
+  .drawer__submit { width: 100%; justify-content: center; margin-top: 0.75rem; }
+  .drawer__submit:disabled { opacity: 0.5; pointer-events: none; }
+  .drawer__note { margin-top: 0.75rem; font-size: 0.75rem; color: var(--muted); line-height: 1.45; }
+</style>

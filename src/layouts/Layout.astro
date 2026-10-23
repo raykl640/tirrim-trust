@@ -15,6 +15,9 @@ import serif400 from '@fontsource/newsreader/files/newsreader-latin-400-normal.w
 import { getImage } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Search from '../components/Search.astro';
+import GiveDrawer from '../components/GiveDrawer.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { site } from '../data/site';
 import { photos } from '../data/photos';
 import { href } from '../lib/url';
@@ -61,6 +64,19 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
     </main>
     <Footer />
 
+    <button class="totop" aria-label="Back to top" data-totop>
+      <svg class="totop__ring" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" pathLength="100" />
+        <circle cx="24" cy="24" r="22" pathLength="100" data-totop-progress />
+      </svg>
+      <svg class="totop__arrow" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 16V4M4.5 9 10 3.5 15.5 9" /></svg>
+    </button>
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+    <Search />
+    <GiveDrawer />
+    <Lightbox />
+
     <script>
       // Header: solid once the page scrolls, tucks away on the way down.
       const header = document.querySelector<HTMLElement>('[data-header]')!;
@@ -71,8 +87,43 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
         header.toggleAttribute('data-hidden', y > 480 && y > lastY);
         lastY = y;
       };
+      // Back to top, with a ring that fills as you read.
+      const totop = document.querySelector<HTMLElement>('[data-totop]')!;
+      const ring = totop.querySelector<SVGCircleElement>('[data-totop-progress]')!;
+      const onProgress = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        ring.style.strokeDashoffset = String(100 - (max > 0 ? (scrollY / max) * 100 : 0));
+        totop.toggleAttribute('data-show', scrollY > innerHeight * 0.9);
+      };
+      totop.addEventListener('click', () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
+
       onScroll();
-      addEventListener('scroll', onScroll, { passive: true });
+      onProgress();
+      addEventListener('scroll', () => { onScroll(); onProgress(); }, { passive: true });
+
+      // Show the right shortcut for the platform.
+      if (/Mac|iPhone|iPad/.test(navigator.platform)) document.querySelectorAll('[data-kbd]').forEach((k) => (k.textContent = '⌘K'));
+
+      // Toasts and copy-to-clipboard.
+      const toastEl = document.querySelector<HTMLElement>('[data-toast]')!;
+      let toastTimer = 0;
+      const toast = (msg: string) => {
+        toastEl.textContent = msg;
+        toastEl.toggleAttribute('data-show', true);
+        clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toastEl.removeAttribute('data-show'), 2600);
+      };
+      document.addEventListener('click', async (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-copy]');
+        if (!btn) return;
+        e.preventDefault();
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy!);
+          toast(`Copied ${btn.dataset.copy}`);
+        } catch {
+          toast('Copy failed. Please select and copy manually.');
+        }
+      });
 
       // Mobile menu.
       const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
@@ -85,15 +136,91 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
       addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
       matchMedia('(min-width: 68.01rem)').addEventListener('change', (e) => e.matches && setOpen(false));
 
-      // Demo forms: nothing is sent anywhere yet.
+      // Demo forms: friendly inline validation; nothing is sent anywhere yet.
+      const messages: Record<string, string> = {
+        valueMissing: 'This field is required.',
+        typeMismatch: 'Please enter a valid email address, like name@example.com.',
+      };
+      const check = (input: HTMLInputElement | HTMLTextAreaElement) => {
+        const field = input.closest<HTMLElement>('.field');
+        if (!field) return true;
+        let err = field.querySelector<HTMLElement>('.field__error');
+        if (!err) {
+          err = Object.assign(document.createElement('span'), { className: 'field__error', id: `${input.name}-err-${Math.random().toString(36).slice(2, 7)}` });
+          field.append(err);
+          input.setAttribute('aria-describedby', err.id);
+        }
+        const key = (['valueMissing', 'typeMismatch'] as const).find((k) => input.validity[k]);
+        err.textContent = key ? messages[key] : '';
+        field.toggleAttribute('data-invalid', !!key);
+        input.setAttribute('aria-invalid', String(!!key));
+        return !key;
+      };
       document.querySelectorAll<HTMLFormElement>('form[data-demo]').forEach((form) => {
+        form.noValidate = true;
+        const inputs = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')];
+        inputs.forEach((i) => {
+          i.addEventListener('blur', () => i.value && check(i));
+          i.addEventListener('input', () => i.closest('.field')?.hasAttribute('data-invalid') && check(i));
+        });
         form.addEventListener('submit', (e) => {
           e.preventDefault();
+          const bad = inputs.filter((i) => !check(i));
+          if (bad.length) return bad[0].focus();
           const status = form.querySelector<HTMLElement>('[data-status]');
           if (status) status.hidden = false;
+          toast('Thank you. This demo form isn’t connected yet.');
           form.reset();
         });
       });
     </script>
   </body>
 </html>
+
+<style is:global>
+  .totop {
+    position: fixed;
+    right: clamp(1rem, 2.5vw, 2rem);
+    bottom: clamp(1rem, 2.5vw, 2rem);
+    z-index: 45;
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    box-shadow: 0 12px 30px -12px rgb(7 21 32 / 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.75rem);
+    transition: opacity 0.3s, transform 0.4s var(--ease), visibility 0.3s, background 0.3s;
+  }
+  .totop[data-show] { opacity: 1; visibility: visible; transform: none; }
+  .totop:hover { background: var(--blue); }
+  .totop > svg { grid-area: 1 / 1; }
+  .totop__ring { width: 100%; height: 100%; rotate: -90deg; fill: none; stroke-width: 2; }
+  .totop__ring circle:first-child { stroke: rgb(255 255 255 / 0.15); }
+  .totop__ring circle:last-child { stroke: var(--cyan); stroke-dasharray: 100; stroke-dashoffset: 100; stroke-linecap: round; }
+  .totop__arrow { width: 1rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.5rem;
+    z-index: 60;
+    max-width: calc(100vw - 2rem);
+    padding: 0.8rem 1.2rem;
+    border-radius: 99px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.875rem;
+    box-shadow: 0 16px 40px -16px rgb(7 21 32 / 0.6);
+    translate: -50% 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, translate 0.4s var(--ease);
+  }
+  .toast[data-show] { opacity: 1; translate: -50% 0; }
+  .header { view-transition-name: site-header; }
+</style>

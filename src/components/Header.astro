@@ -51,7 +51,13 @@ const { pathname } = Astro.url;
       </ul>
     </nav>
 
-    <a href={href('/give/')} class="btn header__give">
+    <button class="header__search" data-search-open aria-label="Search the site (Ctrl K)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" /><path d="m13 13 5 5" /></svg>
+      <span class="header__search-label">Search</span>
+      <span class="kbd header__kbd" data-kbd>Ctrl K</span>
+    </button>
+
+    <a href={href('/give/')} class="btn header__give" data-give>
       Give <Arrow />
     </a>
 
@@ -84,7 +90,7 @@ const { pathname } = Astro.url;
           ))
         }
       </ul>
-      <a href={href('/give/')} class="btn mobile__give">Give to the work <Arrow /></a>
+      <a href={href('/give/')} class="btn mobile__give" data-give>Give to the work <Arrow /></a>
     </nav>
   </div>
 </header>
@@ -138,7 +144,7 @@ const { pathname } = Astro.url;
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.25rem;
   }
   .header__brand { flex: none; margin-right: auto; padding-block: 0.5rem; }
 
@@ -148,8 +154,8 @@ const { pathname } = Astro.url;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.6rem 0.85rem;
-    font-size: 0.875rem;
+    padding: 0.6rem 0.7rem;
+    font-size: 0.8125rem;
     font-weight: 450;
     letter-spacing: -0.005em;
     position: relative;
@@ -157,7 +163,7 @@ const { pathname } = Astro.url;
   .header__link::after {
     content: '';
     position: absolute;
-    left: 0.85rem; right: 0.85rem; bottom: 0.35rem;
+    left: 0.7rem; right: 0.7rem; bottom: 0.35rem;
     height: 1px;
     background: currentColor;
     transform: scaleX(0);
@@ -209,6 +215,20 @@ const { pathname } = Astro.url;
   .header__menu a:hover, .header__menu a[aria-current] { color: var(--blue); }
   .header__menu a:hover .tri, .header__menu a[aria-current] .tri { opacity: 1; transform: none; }
 
+  .header__search {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    height: 2.5rem;
+    padding: 0 0.6rem 0 0.75rem;
+    border-radius: 99px;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    font-size: 0.8125rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .header__search:hover { border-color: currentColor; }
+  .header__search svg { width: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
+  .header__kbd { font-size: 0.625rem; height: 1.25rem; }
   .header__give { min-height: 2.75rem; padding: 0.6rem 1.1rem 0.6rem 1.25rem; font-size: 0.875rem; }
   .header[data-scrolled] .header__give { --btn-bg: var(--blue); --btn-fg: #fff; --btn-hover: var(--ink); }
 
@@ -258,6 +278,10 @@ const { pathname } = Astro.url;
       font-size: 0.875rem;
     }
     .mobile__give { margin-top: 2rem; align-self: flex-start; }
+  }
+  @media (max-width: 80rem) {
+    .header__search-label, .header__kbd { display: none; }
+    .header__search { width: 2.5rem; justify-content: center; padding: 0; }
   }
   @media (max-width: 30rem) {
     .header__give { display: none; }
