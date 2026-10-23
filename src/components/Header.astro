@@ -172,7 +172,7 @@ const { pathname } = Astro.url;
   }
   .header__link:hover::after,
   .header__link[aria-current]::after { transform: scaleX(1); transform-origin: left; }
-  .header__link[aria-current]::after { background: var(--sky); height: 2px; }
+  .header__link[aria-current]::after { background: var(--red); height: 2px; }
   .chev { width: 0.6rem; transition: transform 0.3s var(--ease); }
   .has-menu:hover .chev, .has-menu:focus-within .chev { transform: rotate(180deg); }
 
@@ -230,6 +230,9 @@ const { pathname } = Astro.url;
   .header__search svg { width: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
   .header__kbd { font-size: 0.625rem; height: 1.25rem; }
   .header__give { min-height: 2.75rem; padding: 0.6rem 1.1rem 0.6rem 1.25rem; font-size: 0.875rem; }
+  /* Over the dark hero (or the open mobile menu) the Give button turns sky blue. */
+  .header:is(:not([data-scrolled]), [data-open]) .header__give { --btn-bg: var(--sky); --btn-fg: var(--ink); --btn-hover: #fff; }
+  .header:is(:not([data-scrolled]), [data-open]) .header__give:hover { color: var(--ink); }
 
   .header__toggle { display: none; width: 2.75rem; height: 2.75rem; place-items: center; margin-right: -0.5rem; }
   .burger { display: grid; gap: 7px; width: 1.6rem; }

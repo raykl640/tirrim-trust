@@ -8,7 +8,7 @@ The redesign keeps the Trust's identity (navy blue `#0553B1`, sky blue `#38B6FF`
 
 ## Design approach
 
-**Colour.** The pages are mostly white, navy and sky blue. Red is the minority accent and has one clear job: it marks every Give action, plus the small triangle markers and scripture marks. Red buttons use dark navy text, so the brand red stays legible (WCAG AA).
+**Colour.** The pages are mostly white, navy and sky blue. Red is the minority accent and never sits behind text. It appears as a sun setting behind the huts in the hero skyline, and as small marks: triangle markers, breadcrumb separators, scripture quote marks, the current-page underline, and the outline of the "Christ" label in the Education values cross. Buttons stay navy on light surfaces and sky blue on dark ones.
 
 *Tirrim* means "king post" or "cornerstone". The site is built like an editorial documentary rather than a template:
 

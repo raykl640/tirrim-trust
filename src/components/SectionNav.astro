@@ -68,7 +68,7 @@ const { items } = Astro.props;
     position: relative;
     transition: color 0.2s;
   }
-  .secnav a::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: -1px; height: 2px; background: var(--sky); transform: scaleX(0); transition: transform 0.35s var(--ease); }
+  .secnav a::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: -1px; height: 2px; background: var(--red); transform: scaleX(0); transition: transform 0.35s var(--ease); }
   .secnav a:hover, .secnav a[aria-current] { color: var(--text); }
   .secnav a[aria-current]::after { transform: scaleX(1); }
   :global(html:has(.secnav)) { scroll-padding-top: calc(var(--header-h) + 4rem); }

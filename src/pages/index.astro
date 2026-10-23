@@ -79,6 +79,8 @@ const schoolCards = [
     </div>
 
     <nav class="container skyline" aria-label="Ministries">
+      <!-- A red sun setting behind the huts: dusk over the Kaisut. -->
+      <span class="skyline__sun" aria-hidden="true"><span></span></span>
       {
         skyline.map((d, i) => (
           <a href={href(d.path)} class="dome-link" style={`--h:${d.h}; --w:${d.w}; --i:${i}`}>
@@ -333,7 +335,34 @@ const schoolCards = [
     background: var(--sky);
     opacity: 0.8;
   }
-  .dome-link { flex: var(--w) 1 0; min-width: 0; display: grid; grid-template-rows: var(--sky-h) auto; }
+  .dome-link { position: relative; z-index: 1; flex: var(--w) 1 0; min-width: 0; display: grid; grid-template-rows: var(--sky-h) auto; }
+  /* The sun sinks behind the water hut and is cut off by the horizon. */
+  .skyline__sun {
+    --sun: clamp(4.5rem, 9vw, 8.5rem);
+    position: absolute;
+    inset: 0 var(--gutter) auto;
+    height: var(--sky-h);
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .skyline__sun span {
+    position: absolute;
+    left: var(--sun-x, 27%);
+    bottom: calc(var(--sky-h) * 0.32);
+    width: var(--sun);
+    aspect-ratio: 1;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 60px 10px rgb(255 49 49 / 0.28), 0 0 160px 40px rgb(255 49 49 / 0.12);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .skyline__sun span { animation: sunset 2.4s var(--ease) both; animation-delay: 0.5s; }
+  }
+  @keyframes sunset {
+    from { transform: translateY(-35%); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
   .skyline__dome {
     align-self: end;
     height: calc(var(--sky-h) * var(--h));
@@ -371,9 +400,11 @@ const schoolCards = [
   @media (max-width: 44rem) {
     .hero { --ground: 6rem; }
     .skyline { --sky-h: clamp(11rem, 52vw, 15rem); }
-    .dome-link:first-child, .dome-link:last-child { display: none; }
+    /* Child 1 is the sun, so the domes are children 2–6. */
+    .dome-link:nth-child(2), .dome-link:last-child { display: none; }
     .dome-link { flex: 1 1 0; }
-    .dome-link:nth-child(3) { flex-grow: 1.35; }
+    .skyline__sun { --sun: 4.25rem; --sun-x: 17%; }
+    .dome-link:nth-child(4) { flex-grow: 1.35; }
     .skyline__tag { display: none; }
   }
 
