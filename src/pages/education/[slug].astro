@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import Feature from '../../components/Feature.astro';
+import Scripture from '../../components/Scripture.astro';
+import Arrow from '../../components/Arrow.astro';
+import GiveBand from '../../components/GiveBand.astro';
+import { schoolList, type School } from '../../data/schools';
+import { photos } from '../../data/photos';
+import { href } from '../../lib/url';
+
+export function getStaticPaths() {
+  return schoolList.map((school, i) => ({
+    params: { slug: school.slug },
+    props: { school, next: schoolList[(i + 1) % schoolList.length] },
+  }));
+}
+
+interface Props {
+  school: School;
+  next: School;
+}
+
+const { school, next } = Astro.props;
+---
+
+<Layout title={school.name} description={`${school.name}: ${school.summary} Part of Tirrim Christian Schools, Korr, Northern Kenya.`}>
+  <PageHero
+    eyebrow={`Tirrim Christian Schools · ${school.short}`}
+    title={school.name.replace('Tirrim ', 'Tirrim<br>')}
+    lede={school.lede}
+    photo={school.hero}
+    variant={school.heroVariant}
+    position={school.heroPosition}
+    aspect={school.heroAspect}
+  />
+
+  <section class="section">
+    <div class="container grid-12 intro">
+      <div class="intro__stat reveal">
+        <p class="intro__n">{school.stat.n}</p>
+        <p class="intro__label">{school.stat.label}</p>
+      </div>
+      <div class="intro__text reveal">
+        {school.intro.map((p) => <p class="lede">{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {school.quote && <Scripture quote={school.quote.text} cite={school.quote.cite} tone="blue" />}
+
+  {
+    school.triptych && (
+      <section class="section surface-mist">
+        <div class="container">
+        <ul role="list" class="trip">
+          {school.triptych.map((t, i) => (
+            <li class="reveal" style={`--offset:${i}`}>
+              <div class="media trip__media">
+                <Photo photo={t.photo} sizes="(min-width: 52rem) 30vw, 92vw" />
+              </div>
+              <p class="h3 trip__label">{t.label}</p>
+            </li>
+          ))}
+        </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    school.features && (
+      <section class="section">
+        <div class="container">
+          {school.features.map((f, i) => (
+            <Feature photo={f.photo} title={f.title} flip={i % 2 === 1} position={f.position} tone="mist">
+              {f.body.map((p) => <p>{p}</p>)}
+            </Feature>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    school.graduates && (
+      <section class="section surface-ink">
+        <div class="container">
+          <div class="grid-12 grads__head">
+            <p class="eyebrow reveal">Our graduates</p>
+            <h2 class="h2 grads__title reveal">We aim that graduates will be…</h2>
+          </div>
+          <ol role="list" class="grads">
+            {school.graduates.map((g, i) => (
+              <li class="grad reveal">
+                <span class="grad__n">0{i + 1}</span>
+                <h3 class="h3 grad__title">{g.title}</h3>
+                <ul role="list">
+                  {g.items.map((item) => <li>{item}</li>)}
+                </ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    school.closing && (
+      <figure class="closing">
+        <div class="media horizon closing__media">
+          <Photo photo={school.closing.photo} sizes="100vw" />
+        </div>
+        <figcaption class="container caption">{school.closing.caption}</figcaption>
+      </figure>
+    )
+  }
+
+  <nav class="container nextschool" aria-label="Next school">
+    <a href={href(`/education/${next.slug}/`)} class="nextschool__link">
+      <span class="eyebrow">Next school</span>
+      <span class="nextschool__name">{next.name}</span>
+      <span class="nextschool__go"><Arrow /></span>
+    </a>
+  </nav>
+
+  <GiveBand
+    title="Put a child<br> in school."
+    text="Rendille Education (REAP) provides scholarships for students who desire to go to Tirrim Christian Schools."
+    photo={photos['classroom-girl']}
+  />
+</Layout>
+
+<style>
+  .intro { row-gap: 2rem; align-items: start; }
+  .intro__stat { grid-column: 1 / span 4; border-top: 1px solid var(--text); padding-top: 1.5rem; }
+  .intro__n { font-size: var(--step-5); font-weight: 500; letter-spacing: -0.06em; line-height: 0.9; color: var(--blue); }
+  .intro__label { margin-top: 1rem; color: var(--muted); font-size: 0.9375rem; }
+  .intro__text { grid-column: 6 / -1; }
+  .intro__text .lede { font-size: var(--step-3); line-height: 1.2; letter-spacing: -0.025em; }
+  .intro__text .lede + .lede { margin-top: 1.25rem; }
+
+  .trip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2.5rem); }
+  .trip li { margin-top: calc(var(--offset) * clamp(0rem, 4vw, 4rem)); }
+  .trip__media { aspect-ratio: 4 / 5; border-radius: var(--radius); }
+  .trip__label { margin-top: 1.25rem; }
+
+  .grads__head { row-gap: 1.5rem; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .grads__head > * { grid-column: 1 / -1; }
+  .grads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink-line); }
+  .grad { padding: 2rem clamp(1rem, 2.5vw, 2.5rem) 2.5rem 0; border-bottom: 1px solid var(--ink-line); }
+  .grad:not(:nth-child(3n + 1)) { padding-left: clamp(1rem, 2.5vw, 2.5rem); border-left: 1px solid var(--ink-line); }
+  .grad__n { font-size: 0.8125rem; color: var(--cyan); }
+  .grad__title { margin-block: 1.25rem 1.25rem; font-size: var(--step-2); }
+  .grad li li, .grad ul li { color: rgb(255 255 255 / 0.68); font-size: 0.9375rem; line-height: 1.8; }
+
+  .closing { margin-top: var(--section); }
+  .closing__media { width: 100%; aspect-ratio: 21 / 9; min-height: 18rem; }
+
+  .nextschool { padding-block: var(--section); }
+  .nextschool__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1rem 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--text);
+  }
+  .nextschool__link .eyebrow { grid-column: 1 / -1; }
+  .nextschool__name { font-size: var(--step-5); font-weight: 500; letter-spacing: -0.05em; line-height: 0.95; transition: color 0.3s; }
+  .nextschool__go {
+    width: clamp(3.5rem, 7vw, 5.5rem); aspect-ratio: 1; display: grid; place-items: center;
+    border-radius: 50%; background: var(--cyan); transition: transform 0.5s var(--ease);
+  }
+  .nextschool__go :global(svg) { width: 40%; }
+  .nextschool__link:hover .nextschool__name { color: var(--blue); }
+  .nextschool__link:hover .nextschool__go { transform: rotate(-45deg); }
+
+  @media (max-width: 52rem) {
+    .intro__stat, .intro__text { grid-column: 1 / -1; }
+    .trip { grid-template-columns: 1fr; }
+    .trip li { margin-top: 0; }
+    .grads { grid-template-columns: 1fr 1fr; }
+    .grad:nth-child(n) { padding-left: 0; border-left: 0; }
+    .grad:nth-child(even) { padding-left: 1.25rem; border-left: 1px solid var(--ink-line); }
+  }
+</style>

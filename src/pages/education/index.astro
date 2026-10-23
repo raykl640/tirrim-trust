@@ -1,0 +1,181 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import Arrow from '../../components/Arrow.astro';
+import GiveBand from '../../components/GiveBand.astro';
+import { photos } from '../../data/photos';
+import { schoolList } from '../../data/schools';
+import { href } from '../../lib/url';
+
+const valued = [
+  { name: 'Academic excellence', points: ['Competence and commitment', 'Adequate materials and facilities', 'Disciplined students and teachers'] },
+  {
+    name: 'Teamwork',
+    points: [
+      'Working together to achieve the common goal of presenting every person mature in Christ',
+      'Valuing each person’s strengths and combining God-given talents to produce united efforts',
+    ],
+  },
+  {
+    name: 'Integrity',
+    points: ['Taking pride in what is honest and trustworthy', 'Being honest, sincere and responsible in our service to Jesus and to our community'],
+  },
+  { name: 'A sense of community', points: ['Valuing the family', 'Knowing our neighbour', 'Belonging to our community', 'Serving others'] },
+];
+---
+
+<Layout
+  title="Education"
+  description="Tirrim Christian Schools: nursery, primary, junior high, secondary and adult literacy in Korr, Northern Kenya. Excellence with godliness."
+>
+  <PageHero
+    eyebrow="Tirrim Christian Schools"
+    title="Excellence<br><em>with godliness.</em>"
+    lede="Five schools in the Kaisut Desert, from a nursery class of more than a hundred children to a secondary school with a Biblical worldview."
+    photo={photos['assembly-flag']}
+    position="50% 60%"
+    caption="Morning assembly around the flag."
+  />
+
+  <section class="section">
+    <div class="container grid-12 vm">
+      <article class="vm__item reveal">
+        <p class="eyebrow">Our vision</p>
+        <p class="lede">
+          Tirrim Christian Schools exists to offer the people of Northern Kenya excellent Biblical education, producing
+          leaders who can help build self-sufficient communities where Christ is preeminent in every aspect of life.
+        </p>
+      </article>
+      <article class="vm__item reveal">
+        <p class="eyebrow">Our mission</p>
+        <p class="lede">
+          To train and guide the young people in life skills by applying Biblical education principles, using effective
+          curriculum and having an environment where good role models impact students’ lives.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section surface-mist">
+    <div class="container">
+      <div class="grid-12 sch__head">
+        <p class="eyebrow reveal">The schools</p>
+        <h2 class="h2 sch__title reveal">From first letters<br />to leadership.</h2>
+      </div>
+      <ul role="list" class="sch">
+        {
+          schoolList.map((s, i) => (
+            <li class="reveal">
+              <a href={href(`/education/${s.slug}/`)} class="sch__card">
+                <div class="media sch__media">
+                  <Photo photo={s.card} sizes="(min-width: 64rem) 30vw, (min-width: 40rem) 45vw, 92vw" />
+                </div>
+                <div class="sch__body">
+                  <span class="sch__num">0{i + 1}</span>
+                  <h3 class="h4">{s.short}</h3>
+                  <p class="muted">{s.summary}</p>
+                  <span class="sch__go">
+                    <Arrow direction="up-right" />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- The original “We value” diagram: four values divided by a cross. -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-12 val__head">
+        <p class="eyebrow reveal">We value</p>
+        <h2 class="h2 val__title reveal">Christ-centred education.</h2>
+      </div>
+      <div class="cross reveal">
+        {
+          valued.map((v) => (
+            <div class="cross__cell">
+              <h3 class="h4">{v.name}</h3>
+              <ul role="list">
+                {v.points.map((p) => <li>{p}</li>)}
+              </ul>
+            </div>
+          ))
+        }
+        <p class="cross__centre">Christ</p>
+      </div>
+    </div>
+  </section>
+
+  <GiveBand
+    title="Put a child<br> in school."
+    text="Rendille Education (REAP) provides scholarships for students who desire to go to Tirrim Christian Schools."
+    photo={photos['classroom-girl']}
+  />
+</Layout>
+
+<style>
+  .vm { row-gap: 3rem; }
+  .vm__item { grid-column: span 6; }
+  .vm__item .lede { margin-top: 1.5rem; max-width: 30ch; }
+  .vm__item + .vm__item { padding-left: clamp(0rem, 3vw, 3rem); border-left: 1px solid var(--line); }
+
+  .sch__head { row-gap: 1.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .sch__head > * { grid-column: 1 / -1; }
+  .sch { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(1rem, 2.4vw, 2.5rem); }
+  .sch li { grid-column: span 2; }
+  .sch li:nth-child(-n + 2) { grid-column: span 3; }
+  .sch__card { display: block; background: #fff; border-radius: var(--radius); overflow: hidden; height: 100%; }
+  .sch__media { aspect-ratio: 3 / 2; }
+  .sch li:nth-child(-n + 2) .sch__media { aspect-ratio: 16 / 9; }
+  .sch__media :global(img) { transition: transform 0.9s var(--ease); }
+  .sch__card:hover .sch__media :global(img) { transform: scale(1.05); }
+  .sch__body { position: relative; padding: 1.5rem 4.5rem 1.75rem 1.5rem; }
+  .sch__num { font-size: 0.8125rem; color: var(--blue); }
+  .sch__body h3 { margin-block: 0.5rem 0.6rem; }
+  .sch__body p { font-size: 0.9375rem; }
+  .sch__go {
+    position: absolute; right: 1.5rem; top: 1.5rem;
+    width: 2.5rem; height: 2.5rem; display: grid; place-items: center;
+    border-radius: 50%; border: 1px solid var(--line);
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .sch__go :global(svg) { width: 1rem; }
+  .sch__card:hover .sch__go { background: var(--cyan); border-color: var(--cyan); }
+
+  .val__head { row-gap: 1.5rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .val__head > * { grid-column: 1 / -1; }
+  .cross { position: relative; display: grid; grid-template-columns: 1fr 1fr; }
+  .cross__cell { padding: clamp(1.75rem, 4vw, 3.5rem); }
+  .cross__cell:nth-child(1), .cross__cell:nth-child(2) { border-bottom: 3px solid var(--ink); }
+  .cross__cell:nth-child(odd) { border-right: 3px solid var(--ink); }
+  .cross__cell:nth-child(even) { padding-left: clamp(2.5rem, 6vw, 5rem); }
+  .cross__cell:nth-child(n + 3) { padding-top: clamp(2.5rem, 6vw, 5rem); }
+  .cross__cell h3 { margin-bottom: 1.25rem; }
+  .cross__cell li { position: relative; padding-left: 1.25rem; color: var(--muted); font-size: 0.9375rem; max-width: 40ch; }
+  .cross__cell li + li { margin-top: 0.5rem; }
+  .cross__cell li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 0.4rem; height: 1px; background: var(--blue); }
+  .cross__centre {
+    position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+    padding: 0.55rem 1.1rem;
+    background: var(--ink); color: #fff;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  @media (max-width: 64rem) {
+    .sch li, .sch li:nth-child(-n + 2) { grid-column: span 3; }
+    .sch li:last-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 40rem) {
+    .vm__item { grid-column: 1 / -1; }
+    .vm__item + .vm__item { padding-left: 0; border-left: 0; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+    .sch li, .sch li:nth-child(-n + 2) { grid-column: 1 / -1; }
+    .cross { grid-template-columns: 1fr; border-left: 3px solid var(--ink); }
+    .cross__cell, .cross__cell:nth-child(n) { border: 0; padding: 1.75rem 0 1.75rem 1.5rem; }
+    .cross__cell + .cross__cell { border-top: 1px solid var(--line); }
+    .cross__centre { display: none; }
+  }
+</style>
