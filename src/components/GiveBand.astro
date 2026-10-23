@@ -1,0 +1,76 @@
+---
+import Photo from './Photo.astro';
+import Arrow from './Arrow.astro';
+import { photos, type Photo as PhotoType } from '../data/photos';
+import { href } from '../lib/url';
+
+interface Props {
+  title?: string;
+  text?: string;
+  photo?: PhotoType;
+}
+
+const {
+  title = 'Send support,<br> be a partner.',
+  text = 'Your support creates an opportunity for more people in Northern Kenya to hear the Word of God.',
+  photo = photos['school-gate'],
+} = Astro.props;
+---
+
+<section class="give surface-blue">
+  <div class="container give__inner">
+    <div class="give__text reveal">
+      <p class="eyebrow">Who you are partnering with</p>
+      <h2 class="h2 give__title" set:html={title} />
+      <p class="lede give__lede">{text}</p>
+      <div class="give__actions">
+        <a href={href('/give/')} class="btn">Give to the work <Arrow /></a>
+        <a href={href('/contact/')} class="btn btn--ghost">Talk to us</a>
+      </div>
+    </div>
+  </div>
+  <!-- The cyan triangle from the original site, now framing a photograph. -->
+  <div class="give__tri" aria-hidden="true">
+    <div class="give__tri-photo media">
+      <Photo photo={photo} sizes="(min-width: 64rem) 45vw, 90vw" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .give { position: relative; overflow: hidden; padding-block: var(--section); }
+  .give__inner { position: relative; z-index: 1; }
+  .give__text { max-width: 40rem; }
+  .give__title { margin-block: 1.75rem; }
+  .give__lede { color: #fff; max-width: 30ch; }
+  .give__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.5rem; }
+
+  .give__tri {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: min(52vw, 46rem);
+    clip-path: polygon(100% 0, 100% 100%, 8% 50%);
+    background: var(--cyan);
+  }
+  .give__tri-photo {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(100% 4%, 100% 96%, 18% 50%);
+    background: var(--cyan);
+  }
+  .give__tri-photo :global(img) { object-position: 58% 50%; }
+
+  @media (max-width: 56rem) {
+    .give { padding-bottom: 0; }
+    .give__tri {
+      position: relative;
+      width: 100%;
+      height: 20rem;
+      margin-top: 3.5rem;
+      clip-path: polygon(0 100%, 100% 100%, 50% 0);
+    }
+    .give__tri-photo { clip-path: polygon(6% 100%, 94% 100%, 50% 8%); }
+  }
+</style>

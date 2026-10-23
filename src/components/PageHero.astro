@@ -1,0 +1,92 @@
+---
+import Photo from './Photo.astro';
+import type { Photo as PhotoType } from '../data/photos';
+
+interface Props {
+  eyebrow: string;
+  /** May contain inline markup such as <em> or <br>. */
+  title: string;
+  lede?: string;
+  photo?: PhotoType;
+  /** "wide": landscape photograph straddling the hero's bottom edge. "split": portrait dome beside the title. */
+  variant?: 'wide' | 'split';
+  position?: string;
+  caption?: string;
+  /** Desktop aspect ratio of a wide photograph; match panoramic sources to avoid upscaling. */
+  aspect?: string;
+}
+
+const { eyebrow, title, lede, photo, variant = 'wide', position, caption, aspect = '21 / 9' } = Astro.props;
+---
+
+<section class:list={['ph surface-ink', `ph--${variant}`, { 'ph--bare': !photo }]}>
+  <div class="container ph__inner">
+    <div class="ph__text">
+      <p class="eyebrow rise" style="--d:0">{eyebrow}</p>
+      <h1 class="h1 ph__title rise" style="--d:1" set:html={title} />
+      {lede && <p class="lede ph__lede rise" style="--d:2">{lede}</p>}
+    </div>
+
+    {
+      photo && variant === 'split' && (
+        <figure class="ph__split">
+          <div class="media dome ph__dome unveil">
+            <Photo photo={photo} priority sizes="(min-width: 64rem) 38vw, 90vw" position={position} />
+          </div>
+          {caption && <figcaption class="caption">{caption}</figcaption>}
+        </figure>
+      )
+    }
+  </div>
+
+  {
+    photo && variant === 'wide' && (
+      <figure class="container ph__wide">
+        <div class="media ph__media unveil" style={`--ar: ${aspect}`}>
+          <Photo photo={photo} priority sizes="(min-width: 90rem) 1360px, 100vw" position={position} />
+        </div>
+        {caption && <figcaption class="caption">{caption}</figcaption>}
+      </figure>
+    )
+  }
+</section>
+
+<style>
+  .ph { padding-top: calc(var(--header-h) + clamp(3rem, 8vw, 7rem)); position: relative; }
+  .ph--bare { padding-bottom: clamp(4rem, 8vw, 7rem); }
+  .ph__inner { display: grid; gap: 2rem; }
+  .ph__text { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1rem, 2.4vw, 2.5rem); row-gap: 1.75rem; align-items: end; }
+  .ph__text .eyebrow { grid-column: 1 / -1; }
+  .ph__title { grid-column: 1 / span 8; }
+  .ph__title :global(em) { font-family: var(--serif); font-weight: 300; font-style: italic; letter-spacing: -0.03em; }
+  .ph__lede { grid-column: 9 / -1; color: rgb(255 255 255 / 0.8); font-size: var(--step-1); padding-bottom: 0.4em; }
+
+  /* Wide: the photograph straddles the edge between ink and page. */
+  .ph--wide:not(.ph--bare) {
+    background: linear-gradient(var(--ink) 0 calc(100% - clamp(6rem, 16vw, 15rem)), var(--paper) 0);
+  }
+  .ph__wide { margin-top: clamp(3rem, 6vw, 5rem); }
+  .ph__media { aspect-ratio: var(--ar); border-radius: var(--radius); }
+  .ph__wide .caption { color: var(--muted); }
+
+  /* Split: title left, a tall dome-shaped portrait right. */
+  .ph--split { padding-bottom: clamp(3rem, 6vw, 6rem); }
+  .ph--split .ph__inner { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1rem, 2.4vw, 2.5rem); align-items: end; }
+  .ph--split .ph__text { grid-column: 1 / span 7; grid-template-columns: 1fr; }
+  .ph--split .ph__title, .ph--split .ph__lede { grid-column: 1 / -1; }
+  .ph--split .ph__lede { max-width: 34ch; }
+  .ph__split { grid-column: 9 / -1; }
+  .ph__dome { aspect-ratio: 4 / 5; }
+
+  @media (max-width: 64rem) {
+    .ph__title { grid-column: 1 / -1; }
+    .ph__lede { grid-column: 1 / span 10; }
+    .ph--split .ph__text, .ph__split { grid-column: 1 / -1; }
+    .ph__split { max-width: 28rem; }
+    .ph__media { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 40rem) {
+    .ph__lede { grid-column: 1 / -1; }
+    .ph__media { aspect-ratio: 4 / 3; }
+  }
+</style>
