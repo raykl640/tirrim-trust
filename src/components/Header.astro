@@ -5,16 +5,25 @@ import { nav } from '../data/site';
 import { href, isCurrent } from '../lib/url';
 
 const { pathname } = Astro.url;
+const onHome = isCurrent(pathname, '/');
+// A manyatta dome with a doorway, drawn from the hut in the Tirrim logo.
+const homeIcon = '<svg class="home-icon" viewBox="0 0 20 16" aria-hidden="true"><path d="M2.5 14C2.5 7.6 5.9 3 10 3s7.5 4.6 7.5 11" /><path d="M8.4 14v-3a1.6 1.6 0 0 1 3.2 0v3" /><path d="M1 14h18" /></svg>';
 ---
 
 <header class="header" data-header>
   <div class="container header__bar">
-    <a href={href('/')} class="header__brand" aria-label="The Tirrim Trust, home">
+    <a href={href('/')} class="header__brand" aria-label="The Tirrim Trust, home" title="Home">
       <Logo width="clamp(3.6rem, 3rem + 1.2vw, 4.15rem)" />
     </a>
 
     <nav class="header__nav" aria-label="Primary">
       <ul role="list" class="header__links">
+        <li class="header__item">
+          <a href={href('/')} class="header__link header__home" aria-current={onHome ? 'page' : undefined}>
+            <Fragment set:html={homeIcon} />
+            Home
+          </a>
+        </li>
         {
           nav.map((item) => (
             <li class:list={['header__item', { 'has-menu': item.children }]}>
@@ -51,6 +60,14 @@ const { pathname } = Astro.url;
       </ul>
     </nav>
 
+    {
+      !onHome && (
+        <a href={href('/')} class="header__round header__home-btn" aria-label="Home">
+          <Fragment set:html={homeIcon} />
+        </a>
+      )
+    }
+
     <button class="header__search" data-search-open aria-label="Search the site (Ctrl K)">
       <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" /><path d="m13 13 5 5" /></svg>
       <span class="header__search-label">Search</span>
@@ -70,7 +87,12 @@ const { pathname } = Astro.url;
   <div class="mobile" id="mobile-menu" data-mobile-menu>
     <nav class="container mobile__inner" aria-label="Mobile">
       <ul role="list" class="mobile__links">
-        <li><a href={href('/')}>Home</a></li>
+        <li>
+          <a href={href('/')} class="mobile__home" aria-current={onHome ? 'page' : undefined}>
+            <Fragment set:html={homeIcon} />
+            Home
+          </a>
+        </li>
         {
           nav.map((item) => (
             <li>
@@ -173,6 +195,22 @@ const { pathname } = Astro.url;
   .header__link:hover::after,
   .header__link[aria-current]::after { transform: scaleX(1); transform-origin: left; }
   .header__link[aria-current]::after { background: var(--red); height: 2px; }
+  .header__home { gap: 0.45rem; }
+  .header :global(.home-icon) { width: 1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .header__home :global(.home-icon) { margin-top: -0.1rem; transition: transform 0.4s var(--ease); }
+  .header__home:hover :global(.home-icon) { transform: translateY(-2px); }
+  /* Compact home button for small screens on inner pages. */
+  .header__round {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .header__round:hover { border-color: currentColor; }
+  .header__round :global(.home-icon) { width: 1.05rem; }
   .chev { width: 0.6rem; transition: transform 0.3s var(--ease); }
   .has-menu:hover .chev, .has-menu:focus-within .chev { transform: rotate(180deg); }
 
@@ -245,6 +283,7 @@ const { pathname } = Astro.url;
   @media (max-width: 68rem) {
     .header__nav { display: none; }
     .header__toggle { display: grid; }
+    .header__round { display: grid; }
     .header__bar { gap: 0.75rem; }
 
     .mobile {
@@ -270,6 +309,8 @@ const { pathname } = Astro.url;
       letter-spacing: -0.04em;
     }
     .mobile__links a[aria-current] { color: var(--sky); }
+    .mobile__links > li > a.mobile__home { display: flex; align-items: center; gap: 0.75rem; }
+    .mobile__home :global(.home-icon) { width: 1.6rem; stroke-width: 1.3; }
     .mobile__sub { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1.1rem; }
     .mobile__sub a {
       display: block;
