@@ -1,0 +1,32 @@
+---
+import { Picture } from 'astro:assets';
+import type { Photo } from '../data/photos';
+
+interface Props {
+  photo: Photo;
+  /** Rendered width hint for the browser, e.g. "(min-width: 64rem) 50vw, 100vw". */
+  sizes?: string;
+  /** The first-screen image: load eagerly at high priority. */
+  priority?: boolean;
+  class?: string;
+  position?: string;
+}
+
+const { photo, sizes = '100vw', priority = false, class: className, position } = Astro.props;
+const steps = [360, 560, 800, 1100, 1440, 1920];
+const widths = [...steps.filter((w) => w < photo.src.width), photo.src.width];
+---
+
+<Picture
+  src={photo.src}
+  alt={photo.alt}
+  widths={widths}
+  sizes={sizes}
+  formats={['webp']}
+  quality={72}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  decoding={priority ? 'sync' : 'async'}
+  class={className}
+  style={position ? `object-position: ${position}` : undefined}
+/>

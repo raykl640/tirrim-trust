@@ -1,0 +1,22 @@
+---
+// The traced Tirrim mark, painted with `currentColor` through a CSS mask so a
+// single cached SVG serves both the light and dark treatments.
+interface Props {
+  class?: string;
+  /** CSS width; height follows the mark's aspect ratio. */
+  width?: string;
+}
+const { class: className, width = '100%' } = Astro.props;
+---
+
+<span class:list={['logo', className]} style={`--logo-w: ${width}`} role="img" aria-label="The Tirrim Trust"></span>
+
+<style>
+  .logo {
+    display: block;
+    width: var(--logo-w);
+    aspect-ratio: 2080 / 1560;
+    background: currentColor;
+    mask: url('../assets/brand/logo.svg') center / contain no-repeat;
+  }
+</style>

@@ -1,0 +1,265 @@
+---
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+import { nav } from '../data/site';
+import { href, isCurrent } from '../lib/url';
+
+const { pathname } = Astro.url;
+---
+
+<header class="header" data-header>
+  <div class="container header__bar">
+    <a href={href('/')} class="header__brand" aria-label="The Tirrim Trust, home">
+      <Logo width="clamp(3.6rem, 3rem + 1.2vw, 4.15rem)" />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <ul role="list" class="header__links">
+        {
+          nav.map((item) => (
+            <li class:list={['header__item', { 'has-menu': item.children }]}>
+              <a
+                href={href(item.path)}
+                class="header__link"
+                aria-current={isCurrent(pathname, item.path) ? 'page' : undefined}
+              >
+                {item.label}
+                {item.children && (
+                  <svg class="chev" viewBox="0 0 10 6" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" />
+                  </svg>
+                )}
+              </a>
+              {item.children && (
+                <div class="header__menu">
+                  <p class="header__menu-title">Tirrim Christian Schools</p>
+                  <ul role="list">
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={href(child.path)} aria-current={isCurrent(pathname, child.path) ? 'page' : undefined}>
+                          <span class="tri" />
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a href={href('/give/')} class="btn header__give">
+      Give <Arrow />
+    </a>
+
+    <button class="header__toggle" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+      <span class="sr-only">Menu</span>
+      <span class="burger" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+
+  <div class="mobile" id="mobile-menu" data-mobile-menu>
+    <nav class="container mobile__inner" aria-label="Mobile">
+      <ul role="list" class="mobile__links">
+        <li><a href={href('/')}>Home</a></li>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={href(item.path)} aria-current={isCurrent(pathname, item.path) ? 'page' : undefined}>
+                {item.label}
+              </a>
+              {item.children && (
+                <ul role="list" class="mobile__sub">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={href(child.path)}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <a href={href('/give/')} class="btn mobile__give">Give to the work <Arrow /></a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    --fg: #fff;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    color: var(--fg);
+    transition:
+      transform 0.5s var(--ease),
+      background-color 0.4s var(--ease),
+      color 0.4s var(--ease),
+      box-shadow 0.4s var(--ease);
+  }
+  .header[data-scrolled] {
+    --fg: var(--text);
+    background: rgb(255 255 255 / 0.97);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .header[data-hidden]:not([data-open]) { transform: translateY(-100%); }
+  .header[data-hidden] .header__menu { visibility: hidden; opacity: 0; }
+
+  /* Reading progress: a cyan line that fills like water as you scroll. */
+  .header::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 2px;
+    background: var(--cyan);
+    transform-origin: left;
+    transform: scaleX(0);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .header[data-scrolled]::after { opacity: 1; }
+  @supports (animation-timeline: scroll()) {
+    .header::after {
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+  @keyframes progress {
+    to { transform: scaleX(1); }
+  }
+
+  .header__bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .header__brand { flex: none; margin-right: auto; padding-block: 0.5rem; }
+
+  .header__links { display: flex; align-items: center; gap: 0.25rem; }
+  .header__item { position: relative; }
+  .header__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    font-weight: 450;
+    letter-spacing: -0.005em;
+    position: relative;
+  }
+  .header__link::after {
+    content: '';
+    position: absolute;
+    left: 0.85rem; right: 0.85rem; bottom: 0.35rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease);
+  }
+  .header__link:hover::after,
+  .header__link[aria-current]::after { transform: scaleX(1); transform-origin: left; }
+  .header__link[aria-current]::after { background: var(--cyan); height: 2px; }
+  .chev { width: 0.6rem; transition: transform 0.3s var(--ease); }
+  .has-menu:hover .chev, .has-menu:focus-within .chev { transform: rotate(180deg); }
+
+  .header__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 15rem;
+    padding: 1.25rem;
+    background: #fff;
+    color: var(--text);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 60px -20px rgb(8 19 29 / 0.35), 0 0 0 1px rgb(8 19 29 / 0.06);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition: opacity 0.25s, transform 0.35s var(--ease), visibility 0.25s;
+  }
+  .header__menu::before { content: ''; position: absolute; inset: -0.75rem 0 auto; height: 0.75rem; }
+  .has-menu:hover .header__menu,
+  .has-menu:focus-within .header__menu { opacity: 1; visibility: visible; transform: none; }
+  .header__menu-title {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .header__menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.9375rem;
+    transition: color 0.2s, transform 0.3s var(--ease);
+  }
+  .header__menu a .tri { width: 0.45rem; height: 0.55rem; opacity: 0; transform: translateX(-0.4rem); transition: 0.3s var(--ease); }
+  .header__menu a:hover, .header__menu a[aria-current] { color: var(--blue); }
+  .header__menu a:hover .tri, .header__menu a[aria-current] .tri { opacity: 1; transform: none; }
+
+  .header__give { min-height: 2.75rem; padding: 0.6rem 1.1rem 0.6rem 1.25rem; font-size: 0.875rem; }
+  .header[data-scrolled] .header__give { --btn-bg: var(--blue); --btn-fg: #fff; --btn-hover: var(--ink); }
+
+  .header__toggle { display: none; width: 2.75rem; height: 2.75rem; place-items: center; margin-right: -0.5rem; }
+  .burger { display: grid; gap: 7px; width: 1.6rem; }
+  .burger span { display: block; height: 1.5px; background: currentColor; transition: transform 0.4s var(--ease); }
+  [data-open] .burger span:first-child { transform: translateY(4.25px) rotate(45deg); }
+  [data-open] .burger span:last-child { transform: translateY(-4.25px) rotate(-45deg); }
+
+  .mobile { display: none; }
+
+  @media (max-width: 68rem) {
+    .header__nav { display: none; }
+    .header__toggle { display: grid; }
+    .header__bar { gap: 0.75rem; }
+
+    .mobile {
+      display: block;
+      position: fixed;
+      inset: var(--header-h) 0 0;
+      background: var(--ink);
+      color: #fff;
+      overflow-y: auto;
+      clip-path: inset(0 0 100% 0);
+      visibility: hidden;
+      transition: clip-path 0.6s var(--ease), visibility 0.6s;
+    }
+    [data-open] .mobile { clip-path: inset(0); visibility: visible; }
+    [data-open] { --fg: #fff; background: var(--ink); box-shadow: none; }
+    [data-open] .header__give { --btn-bg: var(--cyan); --btn-fg: var(--ink); --btn-hover: #fff; }
+    .mobile__inner { padding-block: 1.5rem 3rem; display: flex; flex-direction: column; min-height: 100%; }
+    .mobile__links > li { border-bottom: 1px solid var(--ink-line); }
+    .mobile__links > li > a {
+      display: block;
+      padding: 0.85rem 0;
+      font-size: clamp(1.75rem, 7vw, 2.5rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+    }
+    .mobile__links a[aria-current] { color: var(--cyan); }
+    .mobile__sub { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1.1rem; }
+    .mobile__sub a {
+      display: block;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--ink-line);
+      border-radius: 99px;
+      font-size: 0.875rem;
+    }
+    .mobile__give { margin-top: 2rem; align-self: flex-start; }
+  }
+  @media (max-width: 30rem) {
+    .header__give { display: none; }
+  }
+</style>
