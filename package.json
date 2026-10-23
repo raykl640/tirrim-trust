@@ -1,0 +1,29 @@
+{
+  "name": "tirrim-trust",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Redesign of the Tirrim Trust website: a fast, static Astro site.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "assets:extract": "node scripts/extract-assets.mjs"
+  },
+  "dependencies": {
+    "@fontsource/newsreader": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "potrace": "^2.1.8",
+    "sharp": "^0.35.5"
+  },
+  "engines": {
+    "node": ">=22.23"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raykl640/tirrim-trust.git"
+  }
+}
