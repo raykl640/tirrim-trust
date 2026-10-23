@@ -1,6 +1,7 @@
 /* ==========================================================================
    The Tirrim Trust: design system
-   Brand: blue #1470AF, cyan #01B5EF, sky #8EB6DC, black, white. Poppins.
+   Brand: navy blue #0553B1, sky blue #38B6FF, red #FF3131, white. Poppins.
+   Mostly white, navy and sky; red is the minority accent and marks giving.
    ========================================================================== */
 
 @font-face {
@@ -14,13 +15,13 @@
 }
 
 :root {
-  --blue: #1470af;
-  --blue-deep: #0e5a90;
-  --cyan: #01b5ef;
-  --sky: #8eb6dc;
-  --sky-wash: #e8f0f8;
-  --ink: #071520;
-  --ink-2: #0d2130;
+  --navy: #0553b1;
+  --sky: #38b6ff;
+  --red: #ff3131;
+  --sky-wash: #eaf6ff;
+  /* Dark sections: the brand navy taken down to near-midnight. */
+  --ink: #041a36;
+  --ink-2: #0a2a50;
   --ink-line: rgb(255 255 255 / 0.13);
   --paper: #ffffff;
   --mist: #f1f1f4;
@@ -87,8 +88,8 @@ a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: 500; line-height: 1.05; letter-spacing: -0.035em; text-wrap: balance; }
 p { text-wrap: pretty; }
 ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
-::selection { background: var(--cyan); color: var(--ink); }
-:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--sky); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 2px; }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -96,7 +97,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 }
 .skip-link {
   position: fixed; left: 1rem; top: -4rem; z-index: 100;
-  background: var(--cyan); color: var(--ink); padding: 0.75rem 1rem; font-weight: 500;
+  background: var(--sky); color: var(--ink); padding: 0.75rem 1rem; font-weight: 500;
   transition: top 0.2s;
 }
 .skip-link:focus { top: 1rem; }
@@ -116,7 +117,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   column-gap: clamp(1rem, 2.4vw, 2.5rem);
 }
 .surface-ink { background: var(--ink); color: #fff; }
-.surface-blue { background: var(--blue); color: #fff; }
+.surface-blue { background: var(--navy); color: #fff; }
 .surface-mist { background: var(--mist); }
 .surface-sky { background: var(--sky-wash); }
 .surface-sand { background: var(--sand); }
@@ -131,7 +132,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: var(--topo-color, var(--cyan));
+  background: var(--topo-color, var(--sky));
   opacity: var(--topo-opacity, 0.16);
   mask: url('../assets/brand/topo.svg') center / cover no-repeat;
 }
@@ -157,8 +158,8 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 .prose strong { font-weight: 600; }
 .muted { color: var(--muted); }
 .surface-ink .muted, .surface-blue .muted { color: rgb(255 255 255 / 0.72); }
-.accent { color: var(--blue); }
-.surface-ink .accent { color: var(--cyan); }
+.accent { color: var(--navy); }
+.surface-ink .accent { color: var(--sky); }
 
 /* Eyebrow: the cyan triangle from the original site becomes a wayfinding mark. */
 .eyebrow {
@@ -176,7 +177,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   flex: none;
   width: 0.62em;
   height: 0.72em;
-  background: var(--cyan);
+  background: var(--red);
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 .tri { display: inline-block; }
@@ -185,7 +186,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 
 /* --- Buttons & links ------------------------------------------------------ */
 .btn {
-  --btn-bg: var(--cyan);
+  --btn-bg: var(--sky);
   --btn-fg: var(--ink);
   position: relative;
   display: inline-flex;
@@ -212,8 +213,11 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   transition: transform 0.45s var(--ease);
 }
 .btn:hover::after { transform: scaleX(1); }
-.btn--blue { --btn-bg: var(--blue); --btn-fg: #fff; --btn-hover: var(--ink); }
-.btn--blue:hover { color: #fff; }
+.btn--navy { --btn-bg: var(--navy); --btn-fg: #fff; --btn-hover: var(--ink); }
+/* Red is reserved for giving, so every donate action is easy to spot.
+   Dark text keeps the brand red at an accessible contrast. */
+.btn--give { --btn-bg: var(--red); --btn-fg: var(--ink); --btn-hover: #fff; }
+.btn--navy:hover { color: #fff; }
 .btn--ghost { --btn-bg: transparent; --btn-fg: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
 .surface-ink .btn--ghost:hover, .surface-blue .btn--ghost:hover { color: var(--ink); }
 .btn--ghost:not(.surface-ink *):not(.surface-blue *) { --btn-hover: var(--ink); }
@@ -326,9 +330,9 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
   transition: border-color 0.3s;
 }
 .field textarea { min-height: 8rem; resize: vertical; }
-.field input:focus, .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 1px 0 var(--blue); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--navy); box-shadow: 0 1px 0 var(--navy); }
 .form .btn { justify-self: start; margin-top: 0.5rem; }
-.form__status { font-size: 0.9375rem; color: var(--blue); }
+.form__status { font-size: 0.9375rem; color: var(--navy); }
 /* Inline validation, shown only after the visitor has interacted. */
 .field > .field__error { font-size: 0.8125rem; font-weight: 400; letter-spacing: 0; text-transform: none; color: #b42318; }
 .field > .field__error:empty { display: none; }
@@ -346,7 +350,7 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 
 /* --- Dialog base (search, quick give, lightbox) --------------------------- */
 dialog { padding: 0; border: 0; color: inherit; max-width: none; max-height: none; }
-dialog::backdrop { background: rgb(7 21 32 / 0.6); backdrop-filter: blur(3px); }
+dialog::backdrop { background: rgb(4 26 54 / 0.6); backdrop-filter: blur(3px); }
 html:has(dialog[open]) { overflow: hidden; }
 .kbd {
   display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.4rem; padding: 0 0.35rem;
@@ -364,7 +368,7 @@ html:has(dialog[open]) { overflow: hidden; }
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23071520' stroke-width='1.6'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E") center / 0.95rem no-repeat;
+  background: rgb(255 255 255 / 0.92) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23041a36' stroke-width='1.6'%3E%3Cpath d='M12 3h5v5M8 17H3v-5M17 3l-6 6M3 17l6-6'/%3E%3C/svg%3E") center / 0.95rem no-repeat;
   opacity: 0;
   transform: scale(0.85);
   transition: opacity 0.3s, transform 0.3s var(--ease);

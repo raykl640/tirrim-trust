@@ -4,9 +4,11 @@ A redesign demo for [tirrim.org](https://www.tirrim.org), the Christian ministry
 
 **Live demo:** https://raykl640.github.io/tirrim-trust/
 
-The redesign keeps the Trust's identity (the blue `#1470AF`, the cyan `#01B5EF`, sky `#8EB6DC`, black, white, and Poppins) and every piece of its content, and rebuilds the experience around it.
+The redesign keeps the Trust's identity (navy blue `#0553B1`, sky blue `#38B6FF`, red `#FF3131`, white, and Poppins) and every piece of its content, and rebuilds the experience around it.
 
 ## Design approach
+
+**Colour.** The pages are mostly white, navy and sky blue. Red is the minority accent and has one clear job: it marks every Give action, plus the small triangle markers and scripture marks. Red buttons use dark navy text, so the brand red stays legible (WCAG AA).
 
 *Tirrim* means "king post" or "cornerstone". The site is built like an editorial documentary rather than a template:
 

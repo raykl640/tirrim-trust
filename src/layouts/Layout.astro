@@ -42,7 +42,7 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
-    <meta name="theme-color" content="#08131d" />
+    <meta name="theme-color" content="#041a36" />
     <link rel="preload" href={poppins500} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={poppins600} as="font" type="font/woff2" crossorigin />
@@ -190,18 +190,18 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
     border-radius: 50%;
     background: var(--ink);
     color: #fff;
-    box-shadow: 0 12px 30px -12px rgb(7 21 32 / 0.5);
+    box-shadow: 0 12px 30px -12px rgb(4 26 54 / 0.5);
     opacity: 0;
     visibility: hidden;
     transform: translateY(0.75rem);
     transition: opacity 0.3s, transform 0.4s var(--ease), visibility 0.3s, background 0.3s;
   }
   .totop[data-show] { opacity: 1; visibility: visible; transform: none; }
-  .totop:hover { background: var(--blue); }
+  .totop:hover { background: var(--navy); }
   .totop > svg { grid-area: 1 / 1; }
   .totop__ring { width: 100%; height: 100%; rotate: -90deg; fill: none; stroke-width: 2; }
   .totop__ring circle:first-child { stroke: rgb(255 255 255 / 0.15); }
-  .totop__ring circle:last-child { stroke: var(--cyan); stroke-dasharray: 100; stroke-dashoffset: 100; stroke-linecap: round; }
+  .totop__ring circle:last-child { stroke: var(--sky); stroke-dasharray: 100; stroke-dashoffset: 100; stroke-linecap: round; }
   .totop__arrow { width: 1rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
 
   .toast {
@@ -215,7 +215,7 @@ const og = await getImage({ src: photos['school-gate'].src, width: 1200, height:
     background: var(--ink);
     color: #fff;
     font-size: 0.875rem;
-    box-shadow: 0 16px 40px -16px rgb(7 21 32 / 0.6);
+    box-shadow: 0 16px 40px -16px rgb(4 26 54 / 0.6);
     translate: -50% 1rem;
     opacity: 0;
     pointer-events: none;

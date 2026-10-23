@@ -116,7 +116,7 @@ const entries = searchIndex.map((e) => ({ ...e, path: href(e.path) }));
     background: #fff;
     color: var(--text);
     border-radius: 10px;
-    box-shadow: 0 40px 100px -30px rgb(7 21 32 / 0.6);
+    box-shadow: 0 40px 100px -30px rgb(4 26 54 / 0.6);
     overflow: hidden;
   }
   .search[open] .search__panel { animation: pop 0.35s var(--ease); }
@@ -137,7 +137,7 @@ const entries = searchIndex.map((e) => ({ ...e, path: href(e.path) }));
     border-radius: 6px;
   }
   .search__results :global([aria-selected='true'] a), .search__results :global(a:hover) { background: var(--sand); }
-  .search__results :global(.search__kind) { font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+  .search__results :global(.search__kind) { font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); }
   .search__results :global(.search__title) { font-size: 0.9375rem; font-weight: 500; }
   .search__results :global(svg) { width: 1rem; fill: none; stroke: currentColor; stroke-width: 1.6; opacity: 0; }
   .search__results :global([aria-selected='true'] svg) { opacity: 1; }

@@ -58,7 +58,7 @@ const topics = [
           </select>
         </label>
         <label class="field"><span>Message</span><textarea name="message" required data-message></textarea></label>
-        <button class="btn btn--blue" type="submit">Send message <Arrow /></button>
+        <button class="btn btn--navy" type="submit">Send message <Arrow /></button>
         <p class="form__status" data-status role="status" hidden>
           Thank you. This demo form isn’t connected yet, so nothing was sent. Please email {site.email}.
         </p>
@@ -96,7 +96,7 @@ const topics = [
   .contact__details { grid-column: 1 / span 5; display: grid; gap: 2.5rem; }
   .contact__block .eyebrow { margin-bottom: 0.9rem; }
   .contact__email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
-  .contact__email { display: inline-block; color: var(--blue); word-break: break-word; }
+  .contact__email { display: inline-block; color: var(--navy); word-break: break-word; }
   .contact__email:hover { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 2px; }
   .contact__copy {
     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -107,11 +107,11 @@ const topics = [
   .contact__copy:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
   address { font-style: normal; }
   .contact__form { grid-column: 7 / -1; padding: clamp(1.5rem, 4vw, 2.75rem); background: var(--sand); border-radius: var(--radius); }
-  .contact__prefill { padding: 0.85rem 1rem; border-left: 3px solid var(--cyan); background: #fff; font-size: 0.875rem; }
+  .contact__prefill { padding: 0.85rem 1rem; border-left: 3px solid var(--sky); background: #fff; font-size: 0.875rem; }
   .field select {
     width: 100%; padding: 0.7rem 0; font-size: 1.0625rem; background: transparent;
     border: 0; border-bottom: 1px solid #9aa6b2; border-radius: 0;
   }
-  .field select:focus { outline: none; border-color: var(--blue); box-shadow: 0 1px 0 var(--blue); }
+  .field select:focus { outline: none; border-color: var(--navy); box-shadow: 0 1px 0 var(--navy); }
   @media (max-width: 52rem) { .contact__details, .contact__form { grid-column: 1 / -1; } }
 </style>

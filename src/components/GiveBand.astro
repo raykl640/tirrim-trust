@@ -24,7 +24,7 @@ const {
       <h2 class="h2 give__title" set:html={title} />
       <p class="lede give__lede">{text}</p>
       <div class="give__actions">
-        <a href={href('/give/')} class="btn" data-give>Give to the work <Arrow /></a>
+        <a href={href('/give/')} class="btn btn--give" data-give>Give to the work <Arrow /></a>
         <a href={href('/contact/')} class="btn btn--ghost">Talk to us</a>
       </div>
     </div>
@@ -52,13 +52,13 @@ const {
     right: 0;
     width: min(52vw, 46rem);
     clip-path: polygon(100% 0, 100% 100%, 8% 50%);
-    background: var(--cyan);
+    background: var(--sky);
   }
   .give__tri-photo {
     position: absolute;
     inset: 0;
     clip-path: polygon(100% 4%, 100% 96%, 18% 50%);
-    background: var(--cyan);
+    background: var(--sky);
   }
   .give__tri-photo :global(img) { object-position: 58% 50%; }
 

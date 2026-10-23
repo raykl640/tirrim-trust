@@ -57,7 +57,7 @@ const { pathname } = Astro.url;
       <span class="kbd header__kbd" data-kbd>Ctrl K</span>
     </button>
 
-    <a href={href('/give/')} class="btn header__give" data-give>
+    <a href={href('/give/')} class="btn btn--give header__give" data-give>
       Give <Arrow />
     </a>
 
@@ -90,7 +90,7 @@ const { pathname } = Astro.url;
           ))
         }
       </ul>
-      <a href={href('/give/')} class="btn mobile__give" data-give>Give to the work <Arrow /></a>
+      <a href={href('/give/')} class="btn btn--give mobile__give" data-give>Give to the work <Arrow /></a>
     </nav>
   </div>
 </header>
@@ -123,7 +123,7 @@ const { pathname } = Astro.url;
     position: absolute;
     inset: auto 0 -1px;
     height: 2px;
-    background: var(--cyan);
+    background: var(--sky);
     transform-origin: left;
     transform: scaleX(0);
     opacity: 0;
@@ -172,7 +172,7 @@ const { pathname } = Astro.url;
   }
   .header__link:hover::after,
   .header__link[aria-current]::after { transform: scaleX(1); transform-origin: left; }
-  .header__link[aria-current]::after { background: var(--cyan); height: 2px; }
+  .header__link[aria-current]::after { background: var(--sky); height: 2px; }
   .chev { width: 0.6rem; transition: transform 0.3s var(--ease); }
   .has-menu:hover .chev, .has-menu:focus-within .chev { transform: rotate(180deg); }
 
@@ -185,7 +185,7 @@ const { pathname } = Astro.url;
     background: #fff;
     color: var(--text);
     border-radius: var(--radius);
-    box-shadow: 0 24px 60px -20px rgb(8 19 29 / 0.35), 0 0 0 1px rgb(8 19 29 / 0.06);
+    box-shadow: 0 24px 60px -20px rgb(4 26 54 / 0.35), 0 0 0 1px rgb(4 26 54 / 0.06);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-0.5rem);
@@ -212,7 +212,7 @@ const { pathname } = Astro.url;
     transition: color 0.2s, transform 0.3s var(--ease);
   }
   .header__menu a .tri { width: 0.45rem; height: 0.55rem; opacity: 0; transform: translateX(-0.4rem); transition: 0.3s var(--ease); }
-  .header__menu a:hover, .header__menu a[aria-current] { color: var(--blue); }
+  .header__menu a:hover, .header__menu a[aria-current] { color: var(--navy); }
   .header__menu a:hover .tri, .header__menu a[aria-current] .tri { opacity: 1; transform: none; }
 
   .header__search {
@@ -230,7 +230,6 @@ const { pathname } = Astro.url;
   .header__search svg { width: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.7; }
   .header__kbd { font-size: 0.625rem; height: 1.25rem; }
   .header__give { min-height: 2.75rem; padding: 0.6rem 1.1rem 0.6rem 1.25rem; font-size: 0.875rem; }
-  .header[data-scrolled] .header__give { --btn-bg: var(--blue); --btn-fg: #fff; --btn-hover: var(--ink); }
 
   .header__toggle { display: none; width: 2.75rem; height: 2.75rem; place-items: center; margin-right: -0.5rem; }
   .burger { display: grid; gap: 7px; width: 1.6rem; }
@@ -258,7 +257,6 @@ const { pathname } = Astro.url;
     }
     [data-open] .mobile { clip-path: inset(0); visibility: visible; }
     [data-open] { --fg: #fff; background: var(--ink); box-shadow: none; }
-    [data-open] .header__give { --btn-bg: var(--cyan); --btn-fg: var(--ink); --btn-hover: #fff; }
     .mobile__inner { padding-block: 1.5rem 3rem; display: flex; flex-direction: column; min-height: 100%; }
     .mobile__links > li { border-bottom: 1px solid var(--ink-line); }
     .mobile__links > li > a {
@@ -268,7 +266,7 @@ const { pathname } = Astro.url;
       font-weight: 500;
       letter-spacing: -0.04em;
     }
-    .mobile__links a[aria-current] { color: var(--cyan); }
+    .mobile__links a[aria-current] { color: var(--sky); }
     .mobile__sub { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1.1rem; }
     .mobile__sub a {
       display: block;

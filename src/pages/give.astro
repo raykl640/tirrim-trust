@@ -64,7 +64,7 @@ const projects = [
                   </ul>
                 )}
               </div>
-              <a href={href('/give/')} class="btn btn--blue proj__btn" data-give={p.id}>
+              <a href={href('/give/')} class="btn btn--give proj__btn" data-give={p.id}>
                 Give to this project <Arrow />
               </a>
             </li>
@@ -91,7 +91,7 @@ const projects = [
     border-bottom: 1px solid var(--line);
   }
   .proj__media { aspect-ratio: 5 / 4; }
-  .proj__n { font-size: 0.8125rem; color: var(--blue); }
+  .proj__n { font-size: 0.8125rem; color: var(--navy); }
   .proj__body h3 { margin-block: 0.75rem 1rem; }
   .proj__body .prose { max-width: 44ch; }
   .proj__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }

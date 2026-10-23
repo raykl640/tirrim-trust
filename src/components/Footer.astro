@@ -16,7 +16,7 @@ const year = new Date().getFullYear();
         <span class="accent">Tirrim</span>, n. <em class="serif">the king post; the cornerstone.</em>{' '}
         Christ-centred ministry to the nomads of Northern Kenya.
       </p>
-      <a href={href('/give/')} class="btn">Become a partner <Arrow /></a>
+      <a href={href('/give/')} class="btn btn--give" data-give>Become a partner <Arrow /></a>
     </div>
 
     <div class="footer__grid">
@@ -108,12 +108,12 @@ const year = new Date().getFullYear();
   }
   .footer__col li + li { margin-top: 0.45rem; }
   .footer__col a { font-size: 0.9375rem; transition: color 0.2s; }
-  .footer__col a:hover { color: var(--cyan); }
+  .footer__col a:hover { color: var(--sky); }
   address { display: flex; flex-direction: column; gap: 0.2rem; font-style: normal; font-size: 0.9375rem; color: rgb(255 255 255 / 0.75); }
   .footer__email-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; }
   .footer__email { color: #fff; }
   .footer__copy { width: 1.9rem; height: 1.9rem; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--ink-line); transition: background 0.2s, color 0.2s; }
-  .footer__copy:hover { background: var(--cyan); color: var(--ink); border-color: var(--cyan); }
+  .footer__copy:hover { background: var(--sky); color: var(--ink); border-color: var(--sky); }
   .footer__copy svg { width: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.6; }
 
   .footer__base {
